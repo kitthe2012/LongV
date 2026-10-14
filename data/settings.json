@@ -1,0 +1,14 @@
+{
+  "comfyUrl": "http://127.0.0.1:8188",
+  "workflows": {},
+  "bindings": {},
+  "workflow": null,
+  "mapping": {
+    "promptNode": "",
+    "promptField": "text",
+    "negativeNode": "",
+    "negativeField": "text",
+    "imageNode": "",
+    "imageField": "image"
+  }
+}
