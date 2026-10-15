@@ -1,0 +1,15 @@
+[2026-10-14T13:37:45.053Z] [INFO] 项目已创建 | idea=一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。
+[2026-10-14T13:38:50.133Z] [INFO] [剧本] 开始执行阶段 | mode=single
+[2026-10-14T13:38:50.136Z] [INFO] [剧本] 准备提交 ComfyUI 工作流 | workflow=提示词生成器 input=none
+[2026-10-14T13:38:50.142Z] [INFO] [剧本] ComfyUI 已接受任务 | workflow=提示词生成器 promptId=93fd9b11-1ad3-4fd5-8994-b70b18fded2a
+[2026-10-14T13:39:43.296Z] [INFO] [剧本] 阶段执行完成 | outputs=2
+[2026-10-14T13:39:43.295Z] [INFO] [剧本] ComfyUI 任务完成并已保存输出 | promptId=93fd9b11-1ad3-4fd5-8994-b70b18fded2a files=1 latent=longv-8a8cf5bb-b52d-45e5-9a66-67cd652cd7d1-0-1791985130136
+[2026-10-14T13:39:57.155Z] [INFO] [角色] 开始执行阶段 | mode=single
+[2026-10-14T13:39:57.156Z] [INFO] [角色] 开始生成资产 | entity=主角 entityId=character-1
+[2026-10-14T13:39:57.157Z] [ERROR] [角色] 阶段执行失败 | error=“角色”尚未绑定工作流。请在右上角连接设置中导入并绑定。
+[2026-10-14T13:41:40.288Z] [INFO] [角色] 开始执行阶段 | mode=single
+[2026-10-14T13:41:40.289Z] [INFO] [角色] 开始生成资产 | entity=主角 entityId=character-1
+[2026-10-14T13:41:40.289Z] [INFO] [角色] 准备提交 ComfyUI 工作流 | workflow=提示词生成器 input=none
+[2026-10-14T13:41:40.292Z] [INFO] [角色] ComfyUI 已接受任务 | workflow=提示词生成器 promptId=88ad3cea-6d9e-4b7c-a410-a4ac6b63ea08
+[2026-10-14T13:42:31.239Z] [INFO] [角色] ComfyUI 任务完成并已保存输出 | promptId=88ad3cea-6d9e-4b7c-a410-a4ac6b63ea08 files=1 latent=longv-8a8cf5bb-b52d-45e5-9a66-67cd652cd7d1-0-1791985300290
+[2026-10-14T13:42:31.241Z] [INFO] [角色] 阶段执行完成 | outputs=1

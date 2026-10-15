@@ -1,0 +1,121 @@
+[2026-10-14T13:51:28.900Z] [INFO] [角色] 开始执行阶段 | mode=single
+[2026-10-14T13:51:28.900Z] [INFO] [角色] 开始生成资产 | entity=主角
+[2026-10-14T13:51:28.901Z] [INFO] [角色] 准备提交 ComfyUI 工作流 | workflow=Qwen-Image-2.1-viggle-turbo-t2i input=none
+[2026-10-14T13:51:28.907Z] [INFO] [角色] ComfyUI 已接受任务 | workflow=Qwen-Image-2.1-viggle-turbo-t2i promptId=be429f50-063d-4d9f-9173-b1d41c112d4a
+[2026-10-14T13:51:49.117Z] [INFO] [角色] ComfyUI 任务完成并已保存输出 | promptId=be429f50-063d-4d9f-9173-b1d41c112d4a files=2 latent=longv-99bbd876-02ee-4683-9c26-40690e88c337-0-1791985888901
+[2026-10-14T13:51:49.119Z] [INFO] [角色] 阶段执行完成 | outputs=1
+[2026-10-14T13:52:30.932Z] [INFO] [环境] 开始执行阶段 | mode=single
+[2026-10-14T13:52:30.933Z] [INFO] [环境] 开始生成资产 | entity=主场景
+[2026-10-14T13:52:30.934Z] [INFO] [环境] 准备提交 ComfyUI 工作流 | workflow=Qwen-Image-2.1-viggle-turbo-t2i input=none
+[2026-10-14T13:52:30.939Z] [INFO] [环境] ComfyUI 已接受任务 | workflow=Qwen-Image-2.1-viggle-turbo-t2i promptId=98c1bc87-a07d-47aa-acf8-c52c804454cc
+[2026-10-14T13:52:50.157Z] [INFO] [环境] ComfyUI 任务完成并已保存输出 | promptId=98c1bc87-a07d-47aa-acf8-c52c804454cc files=2 latent=longv-99bbd876-02ee-4683-9c26-40690e88c337-0-1791985950934
+[2026-10-14T13:52:50.158Z] [INFO] [环境] 阶段执行完成 | outputs=1
+[2026-10-14T13:54:33.757Z] [INFO] [环境] 开始执行阶段 | mode=single
+[2026-10-14T13:54:33.757Z] [INFO] [环境] 开始生成资产 | entity=主场景
+[2026-10-14T13:54:33.759Z] [INFO] [环境] 准备提交 ComfyUI 工作流 | workflow=Qwen-Image-2.1-viggle-turbo-t2i input=none
+[2026-10-14T13:54:33.774Z] [INFO] [环境] ComfyUI 已接受任务 | workflow=Qwen-Image-2.1-viggle-turbo-t2i promptId=0eb99824-0328-4b11-8efb-a5b5241824ab
+[2026-10-14T13:54:43.186Z] [INFO] [环境] ComfyUI 任务完成并已保存输出 | promptId=0eb99824-0328-4b11-8efb-a5b5241824ab files=2 latent=longv-99bbd876-02ee-4683-9c26-40690e88c337-0-1791986073759
+[2026-10-14T13:54:43.188Z] [INFO] [环境] 阶段执行完成 | outputs=1
+[2026-10-14T13:55:56.687Z] [INFO] [环境] 开始执行阶段 | mode=single
+[2026-10-14T13:55:56.688Z] [INFO] [环境] 开始生成资产 | entity=主场景
+[2026-10-14T13:55:56.689Z] [INFO] [环境] 准备提交 ComfyUI 工作流 | workflow=Qwen-Image-2.1-viggle-turbo-t2i input=none
+[2026-10-14T13:55:56.703Z] [INFO] [环境] ComfyUI 已接受任务 | workflow=Qwen-Image-2.1-viggle-turbo-t2i promptId=2555eb39-84eb-40e9-af45-edce2b6327e8
+[2026-10-14T13:56:04.825Z] [INFO] [环境] ComfyUI 任务完成并已保存输出 | promptId=2555eb39-84eb-40e9-af45-edce2b6327e8 files=2 latent=longv-99bbd876-02ee-4683-9c26-40690e88c337-0-1791986156689
+[2026-10-14T13:56:04.826Z] [INFO] [环境] 阶段执行完成 | outputs=1
+[2026-10-14T14:05:14.332Z] [INFO] [分镜] 开始执行阶段 | mode=single
+[2026-10-14T14:05:14.333Z] [INFO] [分镜] 开始生成分镜关键帧 | shot=1 title=开场建立
+[2026-10-14T14:05:14.335Z] [INFO] [分镜] 准备提交 ComfyUI 工作流 | workflow=Qwen-Image-2.1-viggle-turbo-edit shot=1 input=1791986164823-t2i_00007_.png
+[2026-10-14T14:05:14.355Z] [ERROR] [分镜] 阶段执行失败 | error=ComfyUI 400: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"27": {"errors": [{"type": "custom_validation_failed", "message": "Custom validation failed for node", "details": "image - Invalid image file: cat.webp", "extra_info": {"input_name": "image"}}], "dependent_outputs": ["25", "17"], "class_type": "LoadImage"}}}
+[2026-10-14T14:08:56.780Z] [INFO] [分镜] 开始执行阶段 | mode=single
+[2026-10-14T14:08:56.781Z] [INFO] [分镜] 开始生成分镜关键帧 | shot=1 title=开场建立
+[2026-10-14T14:08:56.782Z] [INFO] [分镜] 准备提交 ComfyUI 工作流 | workflow=Qwen-Image-2.1-viggle-turbo-edit shot=1 input=1791986164823-t2i_00007_.png
+[2026-10-14T14:08:56.801Z] [ERROR] [分镜] 阶段执行失败 | error=ComfyUI 400: {"error": {"type": "prompt_outputs_failed_validation", "message": "Prompt outputs failed validation", "details": "", "extra_info": {}}, "node_errors": {"27": {"errors": [{"type": "custom_validation_failed", "message": "Custom validation failed for node", "details": "image - Invalid image file: cat.webp", "extra_info": {"input_name": "image"}}], "dependent_outputs": ["25", "17"], "class_type": "LoadImage"}}}
+[2026-10-14T14:10:35.130Z] [INFO] [分镜] 开始执行阶段 | mode=single
+[2026-10-14T14:10:35.131Z] [INFO] [分镜] 开始生成分镜关键帧 | shot=1 title=开场建立
+[2026-10-14T14:10:35.132Z] [INFO] [分镜] 准备提交 ComfyUI 工作流 | workflow=Qwen-Image-2.1-viggle-turbo-edit shot=1 input=1791986164823-t2i_00007_.png
+[2026-10-14T14:10:35.159Z] [INFO] [分镜] ComfyUI 已接受任务 | workflow=Qwen-Image-2.1-viggle-turbo-edit shot=1 promptId=19bdae74-c9e2-450b-aa5d-0201edac3ce9
+[2026-10-14T14:10:50.334Z] [INFO] [分镜] ComfyUI 任务完成并已保存输出 | shot=1 promptId=19bdae74-c9e2-450b-aa5d-0201edac3ce9 files=1 latent=longv-99bbd876-02ee-4683-9c26-40690e88c337-1-1791987035151
+[2026-10-14T14:10:50.335Z] [INFO] [分镜] 开始生成分镜关键帧 | shot=2 title=发现线索
+[2026-10-14T14:10:50.335Z] [INFO] [分镜] 准备提交 ComfyUI 工作流 | workflow=Qwen-Image-2.1-viggle-turbo-edit shot=2 input=1791986164823-t2i_00007_.png
+[2026-10-14T14:10:50.355Z] [INFO] [分镜] ComfyUI 已接受任务 | workflow=Qwen-Image-2.1-viggle-turbo-edit shot=2 promptId=4990c627-7caf-45b8-8202-ad0cd0cf0792
+[2026-10-14T14:11:06.463Z] [INFO] [分镜] ComfyUI 任务完成并已保存输出 | shot=2 promptId=4990c627-7caf-45b8-8202-ad0cd0cf0792 files=1 latent=longv-99bbd876-02ee-4683-9c26-40690e88c337-2-1791987050346
+[2026-10-14T14:11:06.464Z] [INFO] [分镜] 开始生成分镜关键帧 | shot=3 title=靠近目标
+[2026-10-14T14:11:06.465Z] [INFO] [分镜] 准备提交 ComfyUI 工作流 | workflow=Qwen-Image-2.1-viggle-turbo-edit shot=3 input=1791986164823-t2i_00007_.png
+[2026-10-14T14:11:06.481Z] [INFO] [分镜] ComfyUI 已接受任务 | workflow=Qwen-Image-2.1-viggle-turbo-edit shot=3 promptId=05096736-358c-4581-8457-a642d9e33e9a
+[2026-10-14T14:11:22.744Z] [INFO] [分镜] ComfyUI 任务完成并已保存输出 | shot=3 promptId=05096736-358c-4581-8457-a642d9e33e9a files=1 latent=longv-99bbd876-02ee-4683-9c26-40690e88c337-3-1791987066474
+[2026-10-14T14:11:22.745Z] [INFO] [分镜] 开始生成分镜关键帧 | shot=4 title=意外发生
+[2026-10-14T14:11:22.746Z] [INFO] [分镜] 准备提交 ComfyUI 工作流 | workflow=Qwen-Image-2.1-viggle-turbo-edit shot=4 input=1791986164823-t2i_00007_.png
+[2026-10-14T14:11:22.764Z] [INFO] [分镜] ComfyUI 已接受任务 | workflow=Qwen-Image-2.1-viggle-turbo-edit shot=4 promptId=dc41941b-694d-4262-a16a-838bd72ad093
+[2026-10-14T14:11:36.923Z] [INFO] [分镜] ComfyUI 任务完成并已保存输出 | shot=4 promptId=dc41941b-694d-4262-a16a-838bd72ad093 files=1 latent=longv-99bbd876-02ee-4683-9c26-40690e88c337-4-1791987082757
+[2026-10-14T14:11:36.923Z] [INFO] [分镜] 开始生成分镜关键帧 | shot=5 title=真相一角
+[2026-10-14T14:11:36.924Z] [INFO] [分镜] 准备提交 ComfyUI 工作流 | workflow=Qwen-Image-2.1-viggle-turbo-edit shot=5 input=1791986164823-t2i_00007_.png
+[2026-10-14T14:11:36.959Z] [INFO] [分镜] ComfyUI 已接受任务 | workflow=Qwen-Image-2.1-viggle-turbo-edit shot=5 promptId=41930056-c2dd-4b1e-b19f-e175ec12db17
+[2026-10-14T14:11:52.118Z] [INFO] [分镜] ComfyUI 任务完成并已保存输出 | shot=5 promptId=41930056-c2dd-4b1e-b19f-e175ec12db17 files=1 latent=longv-99bbd876-02ee-4683-9c26-40690e88c337-5-1791987096952
+[2026-10-14T14:11:52.119Z] [INFO] [分镜] 开始生成分镜关键帧 | shot=6 title=冲突升级
+[2026-10-14T14:11:52.119Z] [INFO] [分镜] 准备提交 ComfyUI 工作流 | workflow=Qwen-Image-2.1-viggle-turbo-edit shot=6 input=1791986164823-t2i_00007_.png
+[2026-10-14T14:11:52.137Z] [INFO] [分镜] ComfyUI 已接受任务 | workflow=Qwen-Image-2.1-viggle-turbo-edit shot=6 promptId=68865915-dff5-4dff-90cb-0fc0ca3a5ea8
+[2026-10-14T14:12:06.264Z] [INFO] [分镜] ComfyUI 任务完成并已保存输出 | shot=6 promptId=68865915-dff5-4dff-90cb-0fc0ca3a5ea8 files=1 latent=longv-99bbd876-02ee-4683-9c26-40690e88c337-6-1791987112129
+[2026-10-14T14:12:06.265Z] [INFO] [分镜] 开始生成分镜关键帧 | shot=7 title=反转
+[2026-10-14T14:12:06.265Z] [INFO] [分镜] 准备提交 ComfyUI 工作流 | workflow=Qwen-Image-2.1-viggle-turbo-edit shot=7 input=1791986164823-t2i_00007_.png
+[2026-10-14T14:12:06.286Z] [INFO] [分镜] ComfyUI 已接受任务 | workflow=Qwen-Image-2.1-viggle-turbo-edit shot=7 promptId=67ee9641-f434-448e-a5c1-f03f829c3925
+[2026-10-14T14:12:19.759Z] [INFO] [分镜] ComfyUI 任务完成并已保存输出 | shot=7 promptId=67ee9641-f434-448e-a5c1-f03f829c3925 files=1 latent=longv-99bbd876-02ee-4683-9c26-40690e88c337-7-1791987126278
+[2026-10-14T14:12:19.760Z] [INFO] [分镜] 开始生成分镜关键帧 | shot=8 title=结尾钩子
+[2026-10-14T14:12:19.760Z] [INFO] [分镜] 准备提交 ComfyUI 工作流 | workflow=Qwen-Image-2.1-viggle-turbo-edit shot=8 input=1791986164823-t2i_00007_.png
+[2026-10-14T14:12:19.777Z] [INFO] [分镜] ComfyUI 已接受任务 | workflow=Qwen-Image-2.1-viggle-turbo-edit shot=8 promptId=4b383929-b67b-4323-bfe7-cbda847b3f51
+[2026-10-14T14:12:34.915Z] [INFO] [分镜] ComfyUI 任务完成并已保存输出 | shot=8 promptId=4b383929-b67b-4323-bfe7-cbda847b3f51 files=1 latent=longv-99bbd876-02ee-4683-9c26-40690e88c337-8-1791987139769
+[2026-10-14T14:12:34.916Z] [INFO] [分镜] 阶段执行完成 | outputs=8
+[2026-10-14T14:20:34.164Z] [INFO] [视频] 开始执行阶段 | mode=single
+[2026-10-14T14:20:34.165Z] [INFO] [视频] 开始生成视频镜头 | shot=1 title=开场建立
+[2026-10-14T14:20:34.167Z] [INFO] [视频] 准备提交 ComfyUI 工作流 | workflow=video_minimax_h3_i2v shot=1 input=1791987050332-edit_00001_.png
+[2026-10-14T14:20:34.184Z] [INFO] [视频] ComfyUI 已接受任务 | workflow=video_minimax_h3_i2v shot=1 promptId=fd5f3650-da96-40fe-ba1e-a20d05440986
+[2026-10-14T14:24:36.786Z] [ERROR] [视频] 镜头生成失败 | shot=1 error=ComfyUI 执行超时（超过4分钟）。
+[2026-10-14T14:24:36.789Z] [INFO] [视频] 开始生成视频镜头 | shot=2 title=发现线索
+[2026-10-14T14:24:36.791Z] [INFO] [视频] 准备提交 ComfyUI 工作流 | workflow=video_minimax_h3_i2v shot=2 input=1791987066462-edit_00002_.png
+[2026-10-14T14:24:36.809Z] [INFO] [视频] ComfyUI 已接受任务 | workflow=video_minimax_h3_i2v shot=2 promptId=50d6bfe7-4d0d-4cc8-9f99-30aa248dcbed
+[2026-10-14T14:30:35.917Z] [INFO] [视频] 开始执行阶段 | mode=shot-1
+[2026-10-14T14:30:35.919Z] [INFO] [视频] 开始生成视频镜头 | shot=1 title=开场建立
+[2026-10-14T14:30:35.920Z] [INFO] [视频] 准备提交 ComfyUI 工作流 | workflow=video_minimax_h3_i2v shot=1 input=1791987050332-edit_00001_.png
+[2026-10-14T14:30:35.949Z] [INFO] [视频] ComfyUI 已接受任务 | workflow=video_minimax_h3_i2v shot=1 promptId=4d4c8e5b-d6c6-48fe-a223-1f761021fe66
+[2026-10-14T14:34:38.929Z] [ERROR] [视频] 镜头生成失败 | shot=1 error=ComfyUI 执行超时（超过240秒）。
+[2026-10-14T14:34:38.931Z] [ERROR] [视频] 视频阶段部分失败 | shots=1
+[2026-10-14T15:09:49.619Z] [INFO] [视频] 开始执行阶段 | mode=shot-1
+[2026-10-14T15:09:49.621Z] [INFO] [视频] 开始生成视频镜头 | shot=1 title=开场建立
+[2026-10-14T15:09:49.623Z] [INFO] [视频] 准备提交 ComfyUI 工作流 | workflow=video_minimax_h3_i2v shot=1 input=1791987050332-edit_00001_.png
+[2026-10-14T15:09:49.679Z] [INFO] [视频] ComfyUI 已接受任务 | workflow=video_minimax_h3_i2v shot=1 promptId=70e6a855-fdd6-4858-a10b-ec9836e5c803
+[2026-10-14T15:13:52.397Z] [ERROR] [视频] 镜头生成失败 | shot=1 error=ComfyUI 执行超时（超过240秒）。
+[2026-10-14T15:13:52.400Z] [ERROR] [视频] 视频阶段部分失败 | shots=1
+[2026-10-14T15:23:47.321Z] [INFO] [视频] 开始执行阶段 | mode=single
+[2026-10-14T15:23:47.322Z] [INFO] [视频] 开始生成视频镜头 | shot=1 title=开场建立
+[2026-10-14T15:23:47.323Z] [INFO] [视频] 准备提交 ComfyUI 工作流 | workflow=video_minimax_h3_i2v shot=1 input=1791987050332-edit_00001_.png
+[2026-10-14T15:23:47.339Z] [INFO] [视频] ComfyUI 已接受任务 | workflow=video_minimax_h3_i2v shot=1 promptId=9b1f0ab6-6156-4f17-bcf6-d05c5c9e8b08
+[2026-10-14T15:32:35.055Z] [INFO] [视频] ComfyUI 任务完成并已保存输出 | shot=1 promptId=9b1f0ab6-6156-4f17-bcf6-d05c5c9e8b08 files=2 latent=longv-99bbd876-02ee-4683-9c26-40690e88c337-1-1791991427333
+[2026-10-14T15:32:35.056Z] [INFO] [视频] 开始生成视频镜头 | shot=2 title=发现线索
+[2026-10-14T15:32:35.057Z] [INFO] [视频] 准备提交 ComfyUI 工作流 | workflow=video_minimax_h3_i2v shot=2 input=1791987066462-edit_00002_.png
+[2026-10-14T15:32:35.071Z] [INFO] [视频] ComfyUI 已接受任务 | workflow=video_minimax_h3_i2v shot=2 promptId=3be4eb90-bb8c-4c61-8d8f-c5cb8e801607
+[2026-10-14T15:41:10.826Z] [INFO] [视频] ComfyUI 任务完成并已保存输出 | shot=2 promptId=3be4eb90-bb8c-4c61-8d8f-c5cb8e801607 files=2 latent=longv-99bbd876-02ee-4683-9c26-40690e88c337-2-1791991955066
+[2026-10-14T15:41:10.827Z] [INFO] [视频] 开始生成视频镜头 | shot=3 title=靠近目标
+[2026-10-14T15:41:10.828Z] [INFO] [视频] 准备提交 ComfyUI 工作流 | workflow=video_minimax_h3_i2v shot=3 input=1791987082743-edit_00003_.png
+[2026-10-14T15:41:10.844Z] [INFO] [视频] ComfyUI 已接受任务 | workflow=video_minimax_h3_i2v shot=3 promptId=03c48e8b-342a-4175-b128-3cf63733dd8d
+[2026-10-14T15:41:55.231Z] [ERROR] [视频] ComfyUI 任务失败 | shot=3 promptId=03c48e8b-342a-4175-b128-3cf63733dd8d error=["execution_start",{"prompt_id":"03c48e8b-342a-4175-b128-3cf63733dd8d","timestamp":1791992470844}]
+["execution_cached",{"nodes":["115","105:11","105:24","105:17","105:9","105:6","105:13","105:15","105:107","105:111","105:122","105:123","105:124","105:126"],"prompt_id":"03c48e8b-342a-4175-b128-3cf63733dd8d","timestamp":1791992470852}]
+["execution_interrupted",{"prompt_id":"03c48e8b-342a-4175-b128-3cf63733dd8d","node_id":"105:14","node_type":"SamplerCustomAdvanced","executed":["105:16","105:104","114"],"timestamp":1791992514541}]
+[2026-10-14T15:41:55.232Z] [ERROR] [视频] 镜头生成失败 | shot=3 error=["execution_start",{"prompt_id":"03c48e8b-342a-4175-b128-3cf63733dd8d","timestamp":1791992470844}]
+["execution_cached",{"nodes":["115","105:11","105:24","105:17","105:9","105:6","105:13","105:15","105:107","105:111","105:122","105:123","105:124","105:126"],"prompt_id":"03c48e8b-342a-4175-b128-3cf63733dd8d","timestamp":1791992470852}]
+["execution_interrupted",{"prompt_id":"03c48e8b-342a-4175-b128-3cf63733dd8d","node_id":"105:14","node_type":"SamplerCustomAdvanced","executed":["105:16","105:104","114"],"timestamp":1791992514541}]
+[2026-10-14T15:41:55.235Z] [INFO] [视频] 开始生成视频镜头 | shot=4 title=意外发生
+[2026-10-14T15:41:55.236Z] [INFO] [视频] 准备提交 ComfyUI 工作流 | workflow=video_minimax_h3_i2v shot=4 input=1791987096922-edit_00004_.png
+[2026-10-14T15:41:55.254Z] [INFO] [视频] ComfyUI 已接受任务 | workflow=video_minimax_h3_i2v shot=4 promptId=93da1846-3429-496f-bf90-d917a1190fe9
+[2026-10-14T15:42:08.283Z] [ERROR] [视频] 镜头生成失败 | shot=4 error=无法连接 ComfyUI：fetch failed
+[2026-10-14T15:42:08.284Z] [INFO] [视频] 开始生成视频镜头 | shot=5 title=真相一角
+[2026-10-14T15:42:08.285Z] [INFO] [视频] 准备提交 ComfyUI 工作流 | workflow=video_minimax_h3_i2v shot=5 input=1791987112115-edit_00005_.png
+[2026-10-14T15:42:08.289Z] [ERROR] [视频] 镜头生成失败 | shot=5 error=无法连接 ComfyUI：fetch failed
+[2026-10-14T15:42:08.290Z] [INFO] [视频] 开始生成视频镜头 | shot=6 title=冲突升级
+[2026-10-14T15:42:08.291Z] [INFO] [视频] 准备提交 ComfyUI 工作流 | workflow=video_minimax_h3_i2v shot=6 input=1791987126263-edit_00006_.png
+[2026-10-14T15:42:08.294Z] [ERROR] [视频] 镜头生成失败 | shot=6 error=无法连接 ComfyUI：fetch failed
+[2026-10-14T15:42:08.295Z] [INFO] [视频] 开始生成视频镜头 | shot=7 title=反转
+[2026-10-14T15:42:08.296Z] [INFO] [视频] 准备提交 ComfyUI 工作流 | workflow=video_minimax_h3_i2v shot=7 input=1791987139757-edit_00007_.png
+[2026-10-14T15:42:08.300Z] [ERROR] [视频] 镜头生成失败 | shot=7 error=无法连接 ComfyUI：fetch failed
+[2026-10-14T15:42:08.301Z] [INFO] [视频] 开始生成视频镜头 | shot=8 title=结尾钩子
+[2026-10-14T15:42:08.301Z] [INFO] [视频] 准备提交 ComfyUI 工作流 | workflow=video_minimax_h3_i2v shot=8 input=1791987154914-edit_00008_.png
+[2026-10-14T15:42:08.304Z] [ERROR] [视频] 镜头生成失败 | shot=8 error=无法连接 ComfyUI：fetch failed
+[2026-10-14T15:42:08.304Z] [ERROR] [视频] 视频阶段部分失败 | shots=8

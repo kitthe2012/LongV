@@ -1,7 +1,1268 @@
 {
-  "comfyUrl": "http://127.0.0.1:8188",
-  "workflows": {},
-  "bindings": {},
+  "comfyUrl": "http://[::1]:8188",
+  "workflows": {
+    "提示词生成器": {
+      "name": "提示词生成器",
+      "workflow": {
+        "1": {
+          "inputs": {
+            "text": "青云山全景\n画面：云雾缭绕的仙山，松针挂露，晨光穿透云层。山腰处一间简陋灶房，炊烟袅袅。\n旁白：青云山终年被云雾缭绕，像是仙人随手搭在人间的一块白帕子。"
+          },
+          "class_type": "XiaozhuguangTextBox",
+          "_meta": {
+            "title": "小珠光文本框"
+          }
+        },
+        "2": {
+          "inputs": {
+            "model_family": "Qwen3.6-VL",
+            "model_file": "Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive-Q4_K_P.gguf",
+            "mmproj": "mmproj-Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive-f16.gguf",
+            "context_length": 32768,
+            "gpu_layers": -1
+          },
+          "class_type": "XiaozhuguangQwenModelLoader",
+          "_meta": {
+            "title": "小珠光 Qwen 模型加载器"
+          }
+        },
+        "3": {
+          "inputs": {
+            "user_prompt": [
+              "1",
+              0
+            ],
+            "target_model": "MiniMax-H3",
+            "generation_mode": "Minimax-H3 Text to Video (T2VA)",
+            "seed": 1096141986071211,
+            "unload_after": true,
+            "output_language": "仅英文",
+            "Skill 预设管理": null,
+            "qwen_model": [
+              "2",
+              0
+            ]
+          },
+          "class_type": "XiaozhuguangNinimaxH3Prompt",
+          "_meta": {
+            "title": "小珠光提示词-化神级"
+          }
+        },
+        "4": {
+          "inputs": {
+            "anything": [
+              "3",
+              0
+            ]
+          },
+          "class_type": "easy cleanGpuUsed",
+          "_meta": {
+            "title": "清理显存占用"
+          }
+        },
+        "5": {
+          "inputs": {
+            "text": "integrated_multimodal_description: [Shot 1] Cinematic, ethereal fantasy style. The scene opens with a sweeping aerial view of Qingyun Mountain, a majestic peak shrouded in thick, swirling white clouds. Sunlight pierces through gaps in the cloud layer, creating dramatic god rays that illuminate the mist. In the foreground, close-up details show pine needles hanging with glistening dew drops. As the camera slowly pushes forward and tilts down, the view reveals a rustic, simple kitchen nestled on the mountainside. Smoke curls gently from the chimney, blending with the morning mist. A voiceover begins: <d>[Chinese] 青云山终年被云雾缭绕，像是仙人随手搭在人间的一块白帕子。</d>\n\noverall_soundscape: Soft, ambient wind rustling through pine trees, the distant chirping of morning birds, and the faint crackle of firewood burning in the stove.\n\nnon_diegetic_music: A slow, ethereal guzheng melody plays with a gentle tempo, accompanied by soft flute notes, evoking a sense of tranquility and ancient mystery.",
+            "anything": [
+              "3",
+              0
+            ]
+          },
+          "class_type": "easy showAnything",
+          "_meta": {
+            "title": "展示任何"
+          }
+        }
+      },
+      "mapping": {
+        "promptNode": "1",
+        "promptField": "text",
+        "negativeNode": "",
+        "negativeField": "text",
+        "imageNode": "",
+        "imageField": "image",
+        "outputs": {}
+      }
+    },
+    "Qwen-Image-2.1-viggle-turbo-t2i": {
+      "name": "Qwen-Image-2.1-viggle-turbo-t2i",
+      "workflow": {
+        "2": {
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          },
+          "class_type": "UNETLoader",
+          "_meta": {
+            "title": "UNet加载器"
+          }
+        },
+        "3": {
+          "inputs": {
+            "lora_name": "Qwen-Image-2.1-viggle-turbo-v0.2.1-6step-lora-r128.safetensors",
+            "strength": 1,
+            "model": [
+              "2",
+              0
+            ]
+          },
+          "class_type": "ViggleTurboLora",
+          "_meta": {
+            "title": "Qwen-Image-2.1 Viggle Turbo LoRA (unmerged)"
+          }
+        },
+        "4": {
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          },
+          "class_type": "CLIPLoader",
+          "_meta": {
+            "title": "加载CLIP"
+          }
+        },
+        "5": {
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          },
+          "class_type": "VAELoader",
+          "_meta": {
+            "title": "加载VAE"
+          }
+        },
+        "6": {
+          "inputs": {
+            "value": "# Image Prompt Rewriting Expert\n\nYou turn a user's image request into one long English paragraph that describes the\nfinished image as if you were looking at it, plus the aspect ratio it should be\nrendered at. You are not talking to the user and not talking to a renderer: you are\nan observer reporting what is in the frame.\n\nWork through the eight steps below in order. Each step commits one decision; later\nsteps never revise an earlier one.\n\n## Step 1 — Read the brief and split it in two\n\nList what the user has fixed and what they have left open.\n\nFixed, and it must survive into your description unchanged: every string of text\nthey want shown, every named object, every count, every stated colour, every stated\nposition, and the aspect ratio if they gave one. Copy their text strings character\nfor character, in their own script, including punctuation and spacing.\n\nA third thing they may give you is an instruction about the job rather than about the\npicture — \"use double quotes\", \"no hard-edged blocks\", \"4K, no noise\", \"make sure the\ntext is sharp\". That is not content. Obey it silently where it applies and never echo\nit: the description states what is in the frame, never what must be done.\n\nOpen, and you must decide it: everything they did not mention. A three-word request\nand a three-hundred-word request both become a description of the same size, so a\nshort brief means you are inventing most of the frame, not writing less.\n\n## Step 2 — Fix the frame\n\nDecide the orientation from the subject, then pick the ratio.\n\nIf the user states a ratio, use it. Otherwise: `3:2` for anything horizontal and\n`2:3` for anything vertical — these are the two defaults and cover most images.\nUse `1:1` for a square badge, icon, album cover or single centred emblem, `16:9`\nfor a wide cinematic or presentation frame, `1:2` or `9:16` for a phone screen or a\ntall standing banner. `3:4`, `2:1`, `21:9`, `4:3`, `9:21`, `4:5`, `3:1`, `5:4`,\n`1:3` exist but only when the subject or the user really calls for them.\n\nThe ratio lives only in the `wh_ratio` field. Never write a ratio, a resolution, or\na pixel count into the description itself.\n\n## Step 3 — Write the opening sentence\n\nOne sentence, around twenty words. Name the medium, the style, the subject, and the\nbackground or palette; usually name the orientation too:\n\n`The image is a ⟨vertical / wide / square / tall⟩ ⟨style⟩ ⟨photograph · poster · illustration · scene · portrait · infographic · close-up · graphic · page · card · sheet · logo⟩ of ⟨subject⟩, ⟨the background and its palette⟩.`\n\n`This is a …` or a bare `A vertical realistic photograph of …` work equally well. The\nmedium noun is the one part that is never omitted.\n\nThe style word goes here — realistic, photorealistic, minimalist, flat-vector,\ncinematic, watercolour, isometric, editorial, hand-drawn, 3D-rendered, retro. Name\nit once here; you may echo it in the closing sentence.\n\n## Step 4 — Inventory before you write\n\nBefore any more prose, settle two lists.\n\nEvery element that will appear, each with a place in the frame: upper-left,\nacross the top, on the far right, in the lower-third, in the centre, in front of,\nbehind, tucked into the corner. You will need eight to fourteen such positional\nphrases, about ten typically, and they must reach the corners, the edges and the\ncentre — not cluster in the middle.\n\nEvery piece of text that will be legible in the image, in reading order.\n\n## Step 5 — Walk the frame\n\nNow describe it in order. Which order depends on how the frame is filled.\n\n**If the frame is divided into regions** — a poster, a page, an interface, a layout, a\nwide scene with several things in it — walk the regions:\n\n1. The background and the surface it sits on — this comes immediately after the\n   opening sentence, not at the end.\n2. The top band: headline, header bar, sky, ceiling, whatever occupies the top edge.\n3. Down and across the body of the frame: left side, then centre, then right side.\n   Give each region one or two sentences.\n4. The bottom band: footer, foreground, ground plane, base row.\n\n**If one subject fills the frame** — a portrait, a close-up, a single object — walk\nthe subject instead: the background and how far it falls off, then the subject's pose\nand where it is placed in the frame, then head and face, then body and each garment or\nsurface, then what is held or touching it, then whatever little is left at the edges.\nKeep using positional phrases inside the subject — in the upper-left of the frame,\nbehind the left shoulder, along the lower edge — so the frame stays locatable.\n\nRoughly a third of your sentences should open on the positional phrase itself —\n\"On the right side of the frame, …\", \"In the upper-left corner, …\", \"Across the\nlower third, …\" — so the reader always knows where they are looking.\n\nKeep it to one paragraph. Break to a new paragraph only when the image is genuinely\nbuilt from stacked regions — panels, cards, sections, slides — and then one\nparagraph per region, each opening on where that region sits.\n\n## Step 6 — Set every piece of text\n\nSkip this step if nothing in the image is meant to be read — a third of images have\nno legible text at all, and inventing signage for them is a mistake.\n\nOtherwise, for each string from your Step 4 list, in reading order, name where it sits,\nwhat it looks like, and what it says: `a bold black headline across the top reads \"…\"`.\n\nPut the string in straight double quotes, in its own script — Chinese, Russian,\nKorean, Japanese and Arabic text stays in Chinese, Russian, Korean, Japanese and\nArabic. Give its weight, colour, case and relative size. Describe a line break as a\nsecond line rather than putting a real newline inside the string. If a mark is not meant\nto be read — distant signage, a label behind glass, dense body copy — call it\nblurred, indistinct, or too small to read rather than inventing letters. If the image contains a chart\nor a table, its axes, tick labels, legend entries, series and cell values are text\ntoo: write them out.\n\n## Step 7 — Give the lighting its own sentence\n\nEvery image has light in it, and the description always accounts for it: the source,\nits direction, its quality, and the shadows and highlights it leaves. Soft diffused\ndaylight from a window on the left, hard overhead studio light, warm low sun, flat\neven ambient light for a diagram.\n\nOnce the contents are placed, give it a sentence of its own — `The lighting is …` —\nor, if the light is what makes a particular surface look the way it does, fold it into\nthat surface's sentence. Either way it is stated explicitly, not left implied.\n\n## Step 8 — Close with the whole frame\n\nEnd on a single sentence that steps back:\n\n`The overall composition ⟨is / uses / feels⟩ …`\n\n`The composition is …`, `The overall design …`, `The overall mood …`, `The overall\npalette …` and `The image has …` are the same move. Cover balance and symmetry, the\npalette, the style, and the mood in that one sentence. Write exactly one such\nsentence — do not follow it with a second summary.\n\n## Throughout\n\n**Size.** The description runs about twenty sentences and four to five hundred words,\nroughly twenty-five words a sentence. That is the same size whether the brief was three\nwords or three hundred: a dense frame with many regions and a lot of text runs longer, a\nsingle quiet subject runs shorter, but a thin brief never buys a thin description.\n\n**Observe, don't instruct.** Present tense, third person, declarative. No \"you\", no\n\"create\", no \"make sure\", no \"the AI should\". No quality boosters — no \"masterpiece\",\n\"8K\", \"highly detailed\", \"award-winning\".\n\n**Hedge what you cannot be certain of.** An observer describing a picture says\n\"appears to be\", \"likely\", \"suggesting\", and offers a pair — \"a notebook\nor a tablet\", \"wood or dark laminate\" — when the thing is genuinely ambiguous. Do\nthis often; it is the natural register here. Be flatly definite only about what the\nuser fixed.\n\n**Name colours with a modifier, almost never bare.** Deep navy, muted olive, pale\ncream, warm terracotta, soft dusty rose, blue-grey, off-white, charcoal, brownish-\ngreen. Hex codes only if the user gave them.\n\n**Give the material, not just the noun.** Brushed metal, matte plastic, glossy\nceramic, coarse linen, weathered wood, frosted glass, grain, scuffs, condensation,\nvisible brush strokes, paper fibre.\n\n**Enumerate; never summarise.** \"Several items\" and \"various decorations\" are not\ndescriptions. Say what each thing is. Write small counts as words — three, five,\ntwelve — and if something is partly hidden, say so and describe the visible part.\n\n**People get their observable surface.** Build, posture, where they are looking,\nexpression, hair, skin tone, and each garment with its colour and material. Age is a\nlife stage or a decade — a child, a teenager, a young adult, middle-aged, elderly,\nin her thirties — never a number of years. If a face is turned away or cropped, say\nthat instead of describing it.\n\n**Objects by class, not by brand.** A silver laptop, a mirrorless camera, a compact\nhatchback — unless the user named the brand. Photographic and design vocabulary is\nwelcome: shallow depth of field, bokeh, backlit, close-up, negative space,\ngrid, drop shadow.\n\n**Everything holds together physically.** Shadows fall away from the light, reflections\nmatch what is in front of the surface, scale is consistent between neighbouring\nobjects, and a surface reacts to what sits on it. If the user asked for something\nimpossible, describe it as the image shows it and let the rest of the scene stay\ncoherent around it.\n\n## Language\n\nThe description is always in English, whatever language the request arrives in. The\nonly exception is text shown inside the image, which stays in its own script.\n\n## Output format\n\nReturn one strictly valid JSON object on a single line, nothing before or after:\n\n{\"rewritten_prompt\": \"<the description>\", \"wh_ratio\": \"<e.g. 3:2>\"}\n\n在一个山野里，有个小村庄，右边有一条小河，河的右边有一个猪圈\n"
+          },
+          "class_type": "PrimitiveStringMultiline",
+          "_meta": {
+            "title": "Prompt"
+          }
+        },
+        "7": {
+          "inputs": {
+            "aspect_ratio": "3:2 (Photo)",
+            "megapixels": 1,
+            "multiple": 32
+          },
+          "class_type": "ResolutionSelector",
+          "_meta": {
+            "title": "Output size"
+          }
+        },
+        "8": {
+          "inputs": {
+            "width": [
+              "7",
+              0
+            ],
+            "height": [
+              "7",
+              1
+            ],
+            "batch_size": 1
+          },
+          "class_type": "EmptyLatentImage",
+          "_meta": {
+            "title": "空Latent图像"
+          }
+        },
+        "9": {
+          "inputs": {
+            "value": true
+          },
+          "class_type": "PrimitiveBoolean",
+          "_meta": {
+            "title": "Enhance prompt"
+          }
+        },
+        "11": {
+          "inputs": {
+            "f_string": "{a}\nAspect ratio: {b}:{c}",
+            "values.a": [
+              "6",
+              0
+            ],
+            "values.b": [
+              "7",
+              0
+            ],
+            "values.c": [
+              "7",
+              1
+            ]
+          },
+          "class_type": "StringFormat",
+          "_meta": {
+            "title": "PE request"
+          }
+        },
+        "12": {
+          "inputs": {
+            "prompt": [
+              "11",
+              0
+            ],
+            "max_length": 512,
+            "sampling_mode": "off",
+            "thinking": true,
+            "use_default_template": true,
+            "mtp": "auto",
+            "clip": [
+              "4",
+              0
+            ]
+          },
+          "class_type": "TextGenerate",
+          "_meta": {
+            "title": "Rewrite prompt (Qwen3-VL text encoder)"
+          }
+        },
+        "13": {
+          "inputs": {
+            "json_string": [
+              "12",
+              0
+            ],
+            "key": "rewritten_prompt"
+          },
+          "class_type": "JsonExtractString",
+          "_meta": {
+            "title": "从JSON提取字符串"
+          }
+        },
+        "14": {
+          "inputs": {
+            "string_a": [
+              "13",
+              0
+            ],
+            "string_b": "",
+            "mode": "Equal",
+            "case_sensitive": true
+          },
+          "class_type": "StringCompare",
+          "_meta": {
+            "title": "Rewrite failed?"
+          }
+        },
+        "15": {
+          "inputs": {
+            "switch": [
+              "14",
+              0
+            ],
+            "on_false": [
+              "13",
+              0
+            ],
+            "on_true": [
+              "6",
+              0
+            ]
+          },
+          "class_type": "ComfySwitchNode",
+          "_meta": {
+            "title": "Fall back to the original prompt"
+          }
+        },
+        "16": {
+          "inputs": {
+            "switch": [
+              "9",
+              0
+            ],
+            "on_false": [
+              "6",
+              0
+            ],
+            "on_true": [
+              "15",
+              0
+            ]
+          },
+          "class_type": "ComfySwitchNode",
+          "_meta": {
+            "title": "Enhanced or original"
+          }
+        },
+        "17": {
+          "inputs": {
+            "source": [
+              "16",
+              0
+            ]
+          },
+          "class_type": "PreviewAny",
+          "_meta": {
+            "title": "Prompt used"
+          }
+        },
+        "18": {
+          "inputs": {
+            "prompt": [
+              "16",
+              0
+            ],
+            "negative_prompt": "",
+            "resolution": 1024,
+            "clip": [
+              "4",
+              0
+            ],
+            "vae": [
+              "5",
+              0
+            ]
+          },
+          "class_type": "TextEncodeQwenImage21",
+          "_meta": {
+            "title": "Text Encode Qwen Image 2.1"
+          }
+        },
+        "19": {
+          "inputs": {
+            "model": [
+              "3",
+              0
+            ],
+            "conditioning": [
+              "18",
+              0
+            ]
+          },
+          "class_type": "BasicGuider",
+          "_meta": {
+            "title": "BasicGuider (CFG off)"
+          }
+        },
+        "20": {
+          "inputs": {
+            "noise_seed": 421654424599493
+          },
+          "class_type": "RandomNoise",
+          "_meta": {
+            "title": "随机噪波"
+          }
+        },
+        "21": {
+          "inputs": {
+            "sampler_name": "euler"
+          },
+          "class_type": "KSamplerSelect",
+          "_meta": {
+            "title": "K采样器选择"
+          }
+        },
+        "22": {
+          "inputs": {
+            "nodes": "1.0, 0.9375, 0.875, 0.75, 0.5, 0.25",
+            "latent": [
+              "8",
+              0
+            ]
+          },
+          "class_type": "ViggleTurboSigmas",
+          "_meta": {
+            "title": "Qwen-Image-2.1 Viggle Turbo Sigmas"
+          }
+        },
+        "23": {
+          "inputs": {
+            "noise": [
+              "20",
+              0
+            ],
+            "guider": [
+              "19",
+              0
+            ],
+            "sampler": [
+              "21",
+              0
+            ],
+            "sigmas": [
+              "22",
+              0
+            ],
+            "latent_image": [
+              "8",
+              0
+            ]
+          },
+          "class_type": "SamplerCustomAdvanced",
+          "_meta": {
+            "title": "自定义采样器（高级）"
+          }
+        },
+        "24": {
+          "inputs": {
+            "samples": [
+              "23",
+              0
+            ],
+            "vae": [
+              "5",
+              0
+            ]
+          },
+          "class_type": "VAEDecode",
+          "_meta": {
+            "title": "VAE解码"
+          }
+        },
+        "25": {
+          "inputs": {
+            "filename_prefix": "viggle_turbo/t2i",
+            "images": [
+              "24",
+              0
+            ]
+          },
+          "class_type": "SaveImage",
+          "_meta": {
+            "title": "保存图像"
+          }
+        }
+      },
+      "mapping": {
+        "promptNode": "6",
+        "promptField": "value",
+        "negativeNode": "",
+        "negativeField": "text",
+        "imageNode": "",
+        "imageField": "image",
+        "outputs": {}
+      }
+    },
+    "Qwen-Image-2.1-viggle-turbo-edit": {
+      "name": "Qwen-Image-2.1-viggle-turbo-edit",
+      "workflow": {
+        "2": {
+          "inputs": {
+            "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          },
+          "class_type": "UNETLoader",
+          "_meta": {
+            "title": "UNet加载器"
+          }
+        },
+        "3": {
+          "inputs": {
+            "lora_name": "Qwen-Image-2.1-viggle-turbo-v0.2.1-6step-lora-r128.safetensors",
+            "strength": 1,
+            "model": [
+              "2",
+              0
+            ]
+          },
+          "class_type": "ViggleTurboLora",
+          "_meta": {
+            "title": "Qwen-Image-2.1 Viggle Turbo LoRA (unmerged)"
+          }
+        },
+        "4": {
+          "inputs": {
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "type": "qwen_image",
+            "device": "default"
+          },
+          "class_type": "CLIPLoader",
+          "_meta": {
+            "title": "加载CLIP"
+          }
+        },
+        "5": {
+          "inputs": {
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+          },
+          "class_type": "VAELoader",
+          "_meta": {
+            "title": "加载VAE"
+          }
+        },
+        "6": {
+          "inputs": {
+            "value": "\n# Edit Prompt Enhancer — General (v2, 精简版)\n\n**FIRST — there are TWO separate language decisions. Do NOT conflate them.**\n\n**(A) Language of the rewritten prompt's DESCRIPTIVE prose — every word OUTSIDE double quotes (the description you write for the diffusion model, NOT the text painted into the image). This decision is final and non-negotiable:**\n- User instruction is in Chinese → write the description in Chinese.\n- User instruction is in English → write the description in English.\n- User instruction is in ANY other language (Japanese, Korean, French, Spanish, Thai, etc.) → write the description in English.\n\n**(B) Language of the TEXT THAT WILL BE RENDERED INTO THE OUTPUT IMAGE — the content INSIDE double quotes. Decide it in this strict priority order:**\n1. If the user's instruction gives the exact text to write, OR names a target language for the text (e.g. \"改成'夏日特惠'\", \"把标题写成英文\", \"add a Japanese title\", \"write the caption in Thai\") → render exactly that text / in exactly that specified language.\n2. Otherwise, if the input image already contains text → render in the DOMINANT language of the image's existing text — even when the instruction is written in a different language.\n3. Otherwise (the image contains no text AND the instruction names no target language) → render in the language of the user's instruction itself — including Japanese, Korean, Thai, Arabic, French, etc. Do NOT force it to English.\nWorked example: image is mostly Thai, instruction is in English asking to add/redesign a title without giving the exact words or a language → the rendered (quoted) text must be **Thai** (the image's dominant language), while the surrounding description (A) is still written in English.\n\nTwo reinforcements on decision (B): all rendered (quoted) text must be **monolingual** — do not mix Chinese and English inside the quotes and do not emit a bilingual pair unless the user explicitly asks for one. And **genre never overrides input language**: a \"spec sheet / cinematic data-document / storyboard / technical parameter\" look is achieved through layout and typography, NOT by switching rendered labels to English — every header, label, and caption stays in the decided language (standardized units and user-given proper nouns may remain Latin).\n\nYou are an expert at clarifying image editing instructions. Given a user's vague or ambiguous edit instruction and the input image(s), rewrite it into a precise, unambiguous, actionable editing directive. An input image is ALWAYS present — this is always an image-editing task, never text-to-image from nothing.\n\n## Core Objective\n\nRewrite the instruction so a downstream image-editing model can execute it without guessing — anchored on what the input image(s) actually show, faithful to the user's intent, inventing nothing.\n\n**How much you build is intent-branched.** When the user wants *this picture changed* (a local object/attribute/background edit, a text or UI edit, a quality or style change, a viewpoint/canvas transform), clarify and constrain: say exactly what changes, and let everything else stand. When the user wants *a new picture of this subject* (placing a subject in a new scene, compositing across images, a photo-shoot or poster or infographic built from a reference), construct actively: design the scene, lighting, composition and layout to a professional standard. Scale the elaboration to what was asked — a plain placement stays restrained, a styled shoot or a publication-grade poster is built out fully.\n\n## The Governing Principle — Attribute Disentanglement at Full Strength\n\n**Edit exactly the attribute(s) the user named, push each to a strong and unmistakable degree, and hold everything else at input fidelity.**\n\nBoth halves matter, and the two failure modes are symmetric:\n\n- **Leakage** — touching what the user did not name (a sharpen that re-grades color, an upscale that reframes, a style change that drifts a face, an outfit swap that drops an accessory, a background change that \"helpfully\" cleans up something unmentioned).\n- **Under-editing** — an output a viewer could mistake for the unedited input, because the requested change was applied faintly.\n\nPreservation locks **content, never edit strength**. Recognizability is bought by naming what stays fixed, not by holding the effect back.\n\n## What to Anchor, What to Decide\n\n**Anchor on the image.** Every spatial, tonal and contextual claim comes from what is visibly there. If you are unsure a detail exists, leave it out — a preserved element described at a higher level of abstraction is always safer than an invented specific.\n\n**Say what stays, without repainting it.** Name the untargeted content by type, position and role rather than describing its appearance, and prefer one blanket preservation clause over walking the frame. A preservation description reads to the model as a generation instruction: the more concretely you describe something you meant to keep, the more likely it drifts. Describe appearance concretely only for what you are actually changing, or when it is the only way to disambiguate between similar objects.\n\n**Identity is the hardest invariant.** A person's facial identity and the personal accessories that make them recognizable; a product's exact design, markings and count; and the input's rendering medium (photograph, anime, illustration, sketch, 3D render, painting) all survive every edit unless the user explicitly targets them. When identity comes from a reference image, point at that image rather than describing features in words — verbal descriptions make the model regenerate and degrade the likeness.\n\n**Resolve ambiguity, then commit.** Turn vague intent, imprecise spatial reference and unparameterized style words into something concrete and observable. Translate abstract quality language into the visual properties it implies. Where the instruction offers alternatives or contradicts itself, pick the most reasonable reading and state it as a decision. Keep the user's own action verb, spatial relations and described state intact, and treat anything they asked to preserve as absolute. Preserve creative or physically impossible intent rather than correcting it.\n\n**Only what was asked.** Do not add operations the user did not request, and do not clean up unmentioned defects, overlays or clutter however prominent they look. When an edit removes, moves or reveals something, say enough about the newly exposed region that the result stays physically coherent.\n\n**Text in the image is literal.** Whenever readable text will appear in the output, commit to the exact characters — every element, quoted, nothing summarized or abbreviated away. Text you cannot commit to should not be added at all. Match the typography and language the input establishes unless the user asks otherwise. When the operation extends the canvas outward, name it as outpainting explicitly.\n\n**Write it as an instruction.** Lead with the operation, not a description of the finished picture, and write from the perspective of someone holding only the input image(s).\n\n## Thinking Process\n\nBefore emitting JSON, reason through: what the image(s) actually contain (including a complete reading of any text present); what the user is asking for and which attributes that names; what must therefore stay fixed; the output size; and finally the composed directive. Close with a check that every visible element is either the target of the edit or covered by what stays fixed, that the requested change is unmistakable, that nothing outside the target was touched, and that every quoted string obeys language decision (B).\n\n## Image Reference Rules\n\nFor Multi-Image Input (N >= 2), the rewritten instruction MUST use `<image1>`, `<image2>`, ... to refer to each input image. Do not use natural language references like \"图1\", \"第一张图\", \"the first image\", or \"image A\". This tagging format is mandatory and non-negotiable. For single-image input (N = 1), do NOT use tags — refer to the image naturally (\"图像\", \"图片中\", \"the image\").\n\nState each image's role explicitly — which one is the canvas whose composition and untargeted content survive, and which supply material to transfer — and say what is taken from each. For scene generation with no canvas (合影/合照 and the like), all images serve as identity sources. Describe every referenced image individually; never compress several into a range or a group to avoid describing them one by one.\n\n## Output Size Determination\n\nYou must determine two output fields: `wh_ratio` and `ratio_follow`. These two fields are mutually exclusive — when one has a value, the other must be empty string \"\".\n\n### Step 1: Check if the user explicitly specified a size or aspect ratio\n\nLook for any of the following in the user's edit instruction:\n- Exact pixel dimensions: \"1920x1080\", \"800×600\", \"1080p\"\n- Aspect ratios: \"16:9\", \"4:3\", \"3:2\", \"9:16\", \"1:1\"\n- Descriptive terms mapped to aspect ratios:\n  - \"正方形\" / \"square\" / \"头像\" / \"avatar\" / \"profile picture\" / \"专辑封面\" / \"album cover\" → \"1:1\"\n  - \"横版\" / \"landscape\" / \"横屏\" / \"电脑壁纸\" / \"desktop wallpaper\" / \"宽屏\" / \"widescreen\" / \"视频封面\" / \"video thumbnail\" / \"PPT\" / \"幻灯片\" / \"slide\" / \"演示文稿\" → \"16:9\"\n  - \"竖版\" / \"portrait\" / \"竖屏\" / \"手机壁纸\" / \"phone wallpaper\" / \"手机屏幕\" / \"Instagram story\" / \"Stories\" / \"Reels\" / \"短视频封面\" → \"9:16\"\n  - \"手机全面屏\" / \"全面屏\" / \"iPhone屏幕\" / \"iPhone screen\" → \"18:39\"\n  - \"安卓全面屏\" / \"Android screen\" → \"9:20\"\n  - \"超宽\" / \"ultrawide\" / \"带鱼屏\" → \"7:3\"\n  - \"电影画面\" / \"cinematic\" / \"电影比例\" / \"宽银幕\" / \"cinemascope\" → \"21:9\"\n  - \"海报\" / \"poster\" → \"2:3\"\n  - \"证件照\" / \"ID photo\" / \"passport photo\" / \"小红书\" / \"Xiaohongshu\" → \"3:4\"\n  - \"iPad屏幕\" / \"tablet\" / \"平板屏幕\" → \"4:3\"\n  - \"全景图\" / \"panoramic\" / \"panorama\" → \"2:1\"\n  - \"名片\" / \"business card\" → \"9:5\"\n  - \"A4\" → \"5:7\"(竖向)or \"7:5\"(横向)\n  - \"1080p\" / \"720p\" → \"16:9\"\n\n**High-resolution keywords (\"2K\", \"4K\", \"8K\") are quality descriptors, NOT aspect ratio indicators.** When the user mentions \"2K\", \"4K\", or \"8K\", these only express a desire for high image quality. They must NOT be used to infer or determine the aspect ratio. The aspect ratio should still be determined by other explicit cues or by the input image's ratio. For output resolution, always use 2K-level resolution regardless of whether the user says \"2K\", \"4K\", or \"8K\".\n\nIf the user specified a size or ratio:\n→ `wh_ratio` = the corresponding ratio (e.g., \"16:9\", \"1:1\", \"3:2\")\n→ `ratio_follow` = \"\"\n\nIf the user specified exact pixel dimensions (e.g., \"1920x1080\"), convert to the simplest integer ratio (1920:1080 = 16:9).\n\n### Step 2: If the user did NOT specify any size or ratio\n\n#### Single-image editing (1 input image):\nThe output should follow the input image's resolution.\n→ `wh_ratio` = \"\"\n→ `ratio_follow` = \"<image1>\"\n\n**Exception — Single-image scene generation**: If the task generates a new scene from scratch using the input image only as an identity reference (e.g., \"拍一套写真\", \"cosplay成X\", \"穿越到古代\"), do NOT follow the input image's ratio — the output is a new composition, not an edit of the existing image. Instead, choose `wh_ratio` by scene semantics:\n\n| Scene type | wh_ratio |\n|---|---|\n| Portrait / 写真 / half-body | \"2:3\" |\n| Full-body scene / outdoor activity | \"3:4\" |\n| Landscape-oriented scene | \"3:2\" |\n| No clear orientation hint | Follow the input image's ratio (set `ratio_follow` to `<image1>`, `wh_ratio` to \"\") |\n\n#### Multi-image editing (N ≥ 2 input images):\nYou must identify the **canvas image** (the image whose composition and framing the output should follow), then set `ratio_follow` to that image's tag.\n\n| Edit type | Canvas | ratio_follow |\n|---|---|---|\n| Compositing — transfer subject into a scene (\"把A P到B中\", \"放到\", \"加入到\") | The target scene image | \"<imageX>\" (scene image number) |\n| Face/head swap (\"换脸\", \"换头\") | The body image | \"<imageX>\" (body image number) |\n| Clothing swap (\"换衣服\", \"换装\") | The person image | \"<imageX>\" (person image number) |\n| Style transfer (\"画成X的风格\", \"风格迁移\") | The content image (not the style reference) | \"<imageX>\" (content image number) |\n| Background replacement | The foreground subject image | \"<imageX>\" (subject image number) |\n| Local object replacement | The original image being edited | \"<imageX>\" (original image number) |\n| Scene generation — no canvas (\"合影\", \"合照\", \"一起变老\", \"让他们X\") | No canvas — you must choose a ratio | See below |\n\nFor **scene generation tasks with no canvas** (合影, 合照, 一起吃饭, etc.), set `ratio_follow` = \"\" and choose `wh_ratio` by scene semantics:\n\n| Scene type | wh_ratio |\n|---|---|\n| Group photo / 合影 / 合照 | \"3:2\" |\n| Portrait / 写真 | \"2:3\" |\n| Poster / 海报 | \"2:3\" |\n| Desktop wallpaper | \"16:9\" |\n| Phone wallpaper | \"9:16\" |\n| No clear orientation hint | Follow the last input image's ratio (set `ratio_follow` to the last image, `wh_ratio` to \"\") |\n\n#### Outpainting (扩图 / 延伸画面):\n\nFor outpainting tasks where the user did NOT specify a target aspect ratio, do NOT simply follow the input image's ratio — outpainting changes the image's proportions by definition. Instead, infer the new ratio from the extension direction:\n\n- Extend **right only** or **left only**: widen the ratio. E.g., a 1:1 input → \"3:2\"; a 3:4 input → \"1:1\" or \"4:3\".\n- Extend **both left and right**: widen more aggressively. E.g., a 1:1 input → \"16:9\" or \"2:1\".\n- Extend **down only** or **up only**: make the ratio taller. E.g., a 1:1 input → \"2:3\"; a 16:9 input → \"4:3\" or \"1:1\".\n- Extend **both up and down**: make the ratio significantly taller. E.g., a 1:1 input → \"9:16\".\n- Extend **all sides**: keep the original ratio (the image grows uniformly).\n\nAs a general rule, estimate the extended area as roughly 30%–50% additional space in the specified direction(s), then compute the new W:H ratio accordingly. Set `ratio_follow` = \"\" and `wh_ratio` = the inferred ratio.\n\n#### Panoramic generation (全景 / panorama):\n\n| Panoramic type | wh_ratio |\n|---|---|\n| Standard panorama / 全景 | \"2:1\" |\n| Wide panorama / 超宽全景 | \"3:1\" |\n| 360° / VR panorama | \"2:1\" |\n| User specified a different ratio | Use the user's specified ratio |\n\nSet `ratio_follow` = \"\".\n\n#### Three-view drawings and multi-grid generation (三视图 / 多宫格):\n\nFor three-view or multi-panel grid generation where the user did NOT specify an aspect ratio, do NOT use a fixed default. Determine it adaptively from:\n\n1. **Subject shape proportion**: a tall standing person is vertically oriented, a car is horizontally oriented, a round object roughly square.\n2. **Panel layout arrangement**: how the panels are arranged (1×3 horizontal, 3×1 vertical, 2×2) and the shape of each panel.\n3. **Combined ratio**: (single panel W × columns) : (single panel H × rows), choosing the ratio that best fits the content without excessive empty space or cropping.\n\nExamples:\n- Three side-by-side views of a standing person (each panel ~1:3, portrait) → overall ratio = \"1:1\" — do NOT over-widen to \"2:1\" or \"3:1\", which would squash each portrait panel (use \"3:1\" only when each panel is itself landscape, e.g., a car)\n- Three side-by-side views of a car (each panel ~3:2) → overall ratio = \"3:1\" or \"9:2\"\n- 2×2 grid of a square object → overall ratio = \"1:1\"\n- 3×3 grid of square panels → overall ratio = \"1:1\"\n\nSet `ratio_follow` = \"\" and `wh_ratio` = the adaptively determined ratio.\n\n## Output Format\nOutput a valid JSON object with exactly three fields:\n```json\n{\n  \"rewritten_prompt\": \"<the rewritten editing instruction>\",\n  \"wh_ratio\": \"<aspect ratio like '16:9', or empty string>\",\n  \"ratio_follow\": \"<'<image1>' / '<image2>' / ... / ''>\"\n}\n```\n\n`rewritten_prompt` formatting rules:\n- The entire rewritten prompt must be a single continuous paragraph with NO line breaks or newline characters (`\\n`).\n- All text that should appear as visible, readable content in the output image must be enclosed in double quotes (\"\"). Descriptive or structural language that does not appear as rendered text should NOT be quoted.\n- **Never include any resolution or aspect ratio information in `rewritten_prompt`** (e.g., \"2:3\", \"16:9\", \"1920x1080\", \"2K\", \"4K\"). Resolution and aspect ratio are conveyed exclusively through the `wh_ratio` and `ratio_follow` fields.\n- Write it out in full — no ellipsis, no truncation.\n- State requirements affirmatively (\"保持背景与输入图完全一致\") rather than as prohibitions (\"禁止改变背景\"). Standard preservation phrasing \"保持/保留[X]不变\" is fine.\n- Be precise and decisive: no hedging, no unresolved alternatives, no vague degree words left unresolved.\n- **Language-purge self-check (do this last)**: re-scan every double-quoted string — the text that will be RENDERED in the image — and enforce language decision (B). No quoted string may mix Chinese and English, form a bilingual pair, or carry a parenthetical translation gloss unless the user explicitly asked. Standardized units and user-given proper nouns may remain Latin.\n\nRules for each field:\n- `rewritten_prompt`: The rewritten editing instruction. The descriptive prose (outside double quotes) follows language decision (A); the text rendered inside the image (inside double quotes) follows language decision (B). Retain proper nouns and domain-specific terms in their original language, placed in English double quotes.\n- `wh_ratio`: The target aspect ratio as \"W:H\". Set to \"\" when the output resolution should follow an input image instead.\n- `ratio_follow`: Which input image's resolution the output should follow (\"<image1>\", \"<image2>\", …). Set to \"\" when a specific aspect ratio is provided in `wh_ratio`.\n\nMutual exclusivity rule:\n- If `wh_ratio` has a value → `ratio_follow` must be \"\"\n- If `ratio_follow` is \"<imageX>\" → `wh_ratio` must be \"\"\n\nDo not include any text outside the JSON object — no greetings, no explanations, no markdown code fences.\n\nThe user's edit instruction to rewrite is:\n\nThe woman from image 1 is holding the cat from image 2 in her arms, keep the background of image 1"
+          },
+          "class_type": "PrimitiveStringMultiline",
+          "_meta": {
+            "title": "Prompt"
+          }
+        },
+        "7": {
+          "inputs": {
+            "aspect_ratio": "1:1 (Square)",
+            "megapixels": 1,
+            "multiple": 32
+          },
+          "class_type": "ResolutionSelector",
+          "_meta": {
+            "title": "Output size"
+          }
+        },
+        "8": {
+          "inputs": {
+            "width": [
+              "7",
+              0
+            ],
+            "height": [
+              "7",
+              1
+            ],
+            "batch_size": 1
+          },
+          "class_type": "EmptyLatentImage",
+          "_meta": {
+            "title": "空Latent图像"
+          }
+        },
+        "9": {
+          "inputs": {
+            "value": true
+          },
+          "class_type": "PrimitiveBoolean",
+          "_meta": {
+            "title": "Enhance prompt"
+          }
+        },
+        "11": {
+          "inputs": {
+            "f_string": "{a}\n(Write the description in English.)",
+            "values.a": [
+              "6",
+              0
+            ]
+          },
+          "class_type": "StringFormat",
+          "_meta": {
+            "title": "PE request"
+          }
+        },
+        "12": {
+          "inputs": {
+            "prompt": [
+              "11",
+              0
+            ],
+            "max_length": 512,
+            "sampling_mode": "off",
+            "thinking": true,
+            "use_default_template": true,
+            "mtp": "auto",
+            "clip": [
+              "4",
+              0
+            ],
+            "image": [
+              "28",
+              0
+            ]
+          },
+          "class_type": "TextGenerate",
+          "_meta": {
+            "title": "Rewrite prompt (Qwen3-VL text encoder)"
+          }
+        },
+        "13": {
+          "inputs": {
+            "json_string": [
+              "12",
+              0
+            ],
+            "key": "rewritten_prompt"
+          },
+          "class_type": "JsonExtractString",
+          "_meta": {
+            "title": "从JSON提取字符串"
+          }
+        },
+        "14": {
+          "inputs": {
+            "string_a": [
+              "13",
+              0
+            ],
+            "string_b": "",
+            "mode": "Equal",
+            "case_sensitive": true
+          },
+          "class_type": "StringCompare",
+          "_meta": {
+            "title": "Rewrite failed?"
+          }
+        },
+        "15": {
+          "inputs": {
+            "switch": [
+              "14",
+              0
+            ],
+            "on_false": [
+              "13",
+              0
+            ],
+            "on_true": [
+              "6",
+              0
+            ]
+          },
+          "class_type": "ComfySwitchNode",
+          "_meta": {
+            "title": "Fall back to the original prompt"
+          }
+        },
+        "16": {
+          "inputs": {
+            "switch": [
+              "9",
+              0
+            ],
+            "on_false": [
+              "6",
+              0
+            ],
+            "on_true": [
+              "15",
+              0
+            ]
+          },
+          "class_type": "ComfySwitchNode",
+          "_meta": {
+            "title": "Enhanced or original"
+          }
+        },
+        "17": {
+          "inputs": {
+            "source": [
+              "16",
+              0
+            ]
+          },
+          "class_type": "PreviewAny",
+          "_meta": {
+            "title": "Prompt used"
+          }
+        },
+        "18": {
+          "inputs": {
+            "prompt": [
+              "16",
+              0
+            ],
+            "negative_prompt": "",
+            "resolution": 1024,
+            "clip": [
+              "4",
+              0
+            ],
+            "images.image_1": [
+              "26",
+              0
+            ],
+            "images.image_2": [
+              "27",
+              0
+            ],
+            "vae": [
+              "5",
+              0
+            ]
+          },
+          "class_type": "TextEncodeQwenImage21",
+          "_meta": {
+            "title": "Text Encode Qwen Image 2.1"
+          }
+        },
+        "19": {
+          "inputs": {
+            "model": [
+              "29",
+              0
+            ],
+            "conditioning": [
+              "18",
+              0
+            ]
+          },
+          "class_type": "BasicGuider",
+          "_meta": {
+            "title": "BasicGuider (CFG off)"
+          }
+        },
+        "20": {
+          "inputs": {
+            "noise_seed": 42
+          },
+          "class_type": "RandomNoise",
+          "_meta": {
+            "title": "随机噪波"
+          }
+        },
+        "21": {
+          "inputs": {
+            "sampler_name": "euler"
+          },
+          "class_type": "KSamplerSelect",
+          "_meta": {
+            "title": "K采样器选择"
+          }
+        },
+        "22": {
+          "inputs": {
+            "nodes": "1.0, 0.9375, 0.875, 0.75, 0.5, 0.25",
+            "latent": [
+              "31",
+              0
+            ]
+          },
+          "class_type": "ViggleTurboSigmas",
+          "_meta": {
+            "title": "Qwen-Image-2.1 Viggle Turbo Sigmas"
+          }
+        },
+        "23": {
+          "inputs": {
+            "noise": [
+              "20",
+              0
+            ],
+            "guider": [
+              "19",
+              0
+            ],
+            "sampler": [
+              "21",
+              0
+            ],
+            "sigmas": [
+              "22",
+              0
+            ],
+            "latent_image": [
+              "31",
+              0
+            ]
+          },
+          "class_type": "SamplerCustomAdvanced",
+          "_meta": {
+            "title": "自定义采样器（高级）"
+          }
+        },
+        "24": {
+          "inputs": {
+            "samples": [
+              "23",
+              0
+            ],
+            "vae": [
+              "5",
+              0
+            ]
+          },
+          "class_type": "VAEDecode",
+          "_meta": {
+            "title": "VAE解码"
+          }
+        },
+        "25": {
+          "inputs": {
+            "filename_prefix": "viggle_turbo/edit",
+            "images": [
+              "24",
+              0
+            ]
+          },
+          "class_type": "SaveImage",
+          "_meta": {
+            "title": "保存图像"
+          }
+        },
+        "26": {
+          "inputs": {
+            "image": "woman2.webp"
+          },
+          "class_type": "LoadImage",
+          "_meta": {
+            "title": "Image 1"
+          }
+        },
+        "27": {
+          "inputs": {
+            "image": "cat.webp"
+          },
+          "class_type": "LoadImage",
+          "_meta": {
+            "title": "Image 2"
+          }
+        },
+        "28": {
+          "inputs": {
+            "images.image0": [
+              "26",
+              0
+            ],
+            "images.image1": [
+              "27",
+              0
+            ]
+          },
+          "class_type": "BatchImagesNode",
+          "_meta": {
+            "title": "References for the rewriter"
+          }
+        },
+        "29": {
+          "inputs": {
+            "device": "auto",
+            "dtype": "default",
+            "model": [
+              "3",
+              0
+            ]
+          },
+          "class_type": "QwenImage21Cache",
+          "_meta": {
+            "title": "Qwen Image 2.1 Cache"
+          }
+        },
+        "30": {
+          "inputs": {
+            "value": false
+          },
+          "class_type": "PrimitiveBoolean",
+          "_meta": {
+            "title": "Custom output size (off: size of image 1)"
+          }
+        },
+        "31": {
+          "inputs": {
+            "switch": [
+              "30",
+              0
+            ],
+            "on_false": [
+              "18",
+              2
+            ],
+            "on_true": [
+              "8",
+              0
+            ]
+          },
+          "class_type": "ComfySwitchNode",
+          "_meta": {
+            "title": "Output latent"
+          }
+        }
+      },
+      "mapping": {
+        "promptNode": "18",
+        "promptField": "prompt",
+        "negativeNode": "18",
+        "negativeField": "negative_prompt",
+        "imageNode": "26",
+        "imageField": "image",
+        "outputs": {
+          "imageNode": "25"
+        }
+      }
+    },
+    "video_minimax_h3_i2v": {
+      "name": "video_minimax_h3_i2v",
+      "workflow": {
+        "92": {
+          "inputs": {
+            "filename_prefix": "video/MiniMax_H3",
+            "format": "auto",
+            "format.codec": "auto",
+            "codec": "auto",
+            "video": [
+              "105:91",
+              0
+            ]
+          },
+          "class_type": "SaveVideo",
+          "_meta": {
+            "title": "保存视频"
+          }
+        },
+        "114": {
+          "inputs": {
+            "image": "案例图3.jpg"
+          },
+          "class_type": "LoadImage",
+          "_meta": {
+            "title": "加载图像"
+          }
+        },
+        "115": {
+          "inputs": {
+            "aspect_ratio": "1:1 (Square)",
+            "megapixels": 0.4,
+            "multiple": 32
+          },
+          "class_type": "ResolutionSelector",
+          "_meta": {
+            "title": "分辨率选择器"
+          }
+        },
+        "119": {
+          "inputs": {
+            "upscale_method": "nearest-exact",
+            "megapixels": 0.5,
+            "resolution_steps": 32
+          },
+          "class_type": "ImageScaleToTotalPixels",
+          "_meta": {
+            "title": "缩放图像（像素）"
+          }
+        },
+        "120": {
+          "inputs": {
+            "image": [
+              "119",
+              0
+            ]
+          },
+          "class_type": "GetImageSize",
+          "_meta": {
+            "title": "获取图像尺寸"
+          }
+        },
+        "105:11": {
+          "inputs": {
+            "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+          },
+          "class_type": "VAELoader",
+          "_meta": {
+            "title": "加载VAE"
+          }
+        },
+        "105:24": {
+          "inputs": {
+            "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+          },
+          "class_type": "VAELoader",
+          "_meta": {
+            "title": "加载VAE"
+          }
+        },
+        "105:23": {
+          "inputs": {
+            "samples": [
+              "105:14",
+              0
+            ],
+            "vae": [
+              "105:24",
+              0
+            ]
+          },
+          "class_type": "VAEDecodeAudio",
+          "_meta": {
+            "title": "VAE解码（音频）"
+          }
+        },
+        "105:10": {
+          "inputs": {
+            "samples": [
+              "105:14",
+              0
+            ],
+            "vae": [
+              "105:11",
+              0
+            ]
+          },
+          "class_type": "VAEDecode",
+          "_meta": {
+            "title": "VAE解码"
+          }
+        },
+        "105:17": {
+          "inputs": {
+            "sampler_name": "res_multistep"
+          },
+          "class_type": "KSamplerSelect",
+          "_meta": {
+            "title": "K采样器选择"
+          }
+        },
+        "105:9": {
+          "inputs": {
+            "scheduler": "simple",
+            "steps": [
+              "105:123",
+              0
+            ],
+            "denoise": 1,
+            "model": [
+              "105:122",
+              0
+            ]
+          },
+          "class_type": "BasicScheduler",
+          "_meta": {
+            "title": "基本调度器"
+          }
+        },
+        "105:14": {
+          "inputs": {
+            "noise": [
+              "105:15",
+              0
+            ],
+            "guider": [
+              "105:16",
+              0
+            ],
+            "sampler": [
+              "105:17",
+              0
+            ],
+            "sigmas": [
+              "105:9",
+              0
+            ],
+            "latent_image": [
+              "105:104",
+              1
+            ]
+          },
+          "class_type": "SamplerCustomAdvanced",
+          "_meta": {
+            "title": "自定义采样器（高级）"
+          }
+        },
+        "105:16": {
+          "inputs": {
+            "model": [
+              "105:122",
+              0
+            ],
+            "conditioning": [
+              "105:104",
+              0
+            ]
+          },
+          "class_type": "BasicGuider",
+          "_meta": {
+            "title": "基本引导器"
+          }
+        },
+        "105:6": {
+          "inputs": {
+            "unet_name": "Minimax_H3\\minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+            "weight_dtype": "default"
+          },
+          "class_type": "UNETLoader",
+          "_meta": {
+            "title": "UNet加载器"
+          }
+        },
+        "105:13": {
+          "inputs": {
+            "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+            "type": "minimax",
+            "device": "default"
+          },
+          "class_type": "CLIPLoader",
+          "_meta": {
+            "title": "加载CLIP"
+          }
+        },
+        "105:15": {
+          "inputs": {
+            "noise_seed": 757358688076805
+          },
+          "class_type": "RandomNoise",
+          "_meta": {
+            "title": "随机噪波"
+          }
+        },
+        "105:91": {
+          "inputs": {
+            "fps": 24,
+            "bit_depth": 8,
+            "color_space": "sRGB",
+            "codec": "none",
+            "images": [
+              "105:10",
+              0
+            ],
+            "audio": [
+              "105:23",
+              0
+            ]
+          },
+          "class_type": "CreateVideo",
+          "_meta": {
+            "title": "创建视频"
+          }
+        },
+        "105:104": {
+          "inputs": {
+            "prompt": "Beautiful Woman — Editorial Character Film\nFormat: 3 shots / ~20–25s total | Style: Dark studio void, duotone blue + neon orange rim light, glossy skin and hair texture\n\nGLOBAL ENVIRONMENT (constant across all shots)\nSet: Pitch-black studio void. Dark, subtly reflective floor plane. Deep soft shadow falloff into pure black. No visible horizon or walls.\n\nPalette: Monochromatic dark base with electric blue and warm amber accents only.\n\nLighting: Duotone rim — vibrant blue key from one side, neon orange rim from the opposite. Both lights breathe/pulse subtly throughout.\n\nSubject motif: Refined, sculpted facial features; moist, luminous skin; fine halos of rim light tracing the edges of individual hair strands; deep, expressive eyes with restrained, high-end emotion.\n\nSHOT 1 — OPENING PUSH-IN\nFrame: Opens exactly on the hero image — the woman standing in profile on the dark reflective surface, a faint mirror reflection beneath her, poised and confident.\n\nCamera: Slow, deliberate dolly push-in toward her face. Motion is smooth, almost hypnotic.\n\nAction:\n\nBlue and orange rim lights slowly pulse brighter in a breathing rhythm.\n\nLight flows along the edges of her cheekbones, jawline, and collarbone, progressively sculpting the translucent quality of her skin and the three-dimensional contour of her features.\n\nAs the camera closes distance, the catchlights in her eyes sharpen; eyelash and iris detail emerges.\n\nAudio: Deep pulsing sub-bass room tone begins. Faint electronic hum.\n\nSHOT 2 — FACIAL MACRO\nCut on: Sweeping glassy whoosh.\n\nFrame: Extreme macro profile of the eyes and lips.\n\nCamera: Slow lateral glide along the facial contour, shallow depth of field, focus racking slowly between lashes, iris, and the peak of the lips.\n\nAction:\n\nA sharp beam of warm orange light sweeps across skin and hair, contrasting perfectly against the deep blue ambient glow.\n\nSkin texture and hair strands glint as the highlight passes; moist luminosity reveals detail layer by layer.\n\nAudio: Crisp tactile mechanical clicks (may be replaced with subtle fabric friction and breath), timed to the sweep of the beam.\n\nSHOT 3 — LEVITATION BEAUTY SHOT\nCut on: Sweeping glassy whoosh.\n\nFrame: Low-angle beauty shot.\n\nCamera: The figure levitates weightlessly a few centimeters above the dark reflective surface, rotating in a slow, precise orbit. Camera shoots from a low angle, looking up.\n\nAction:\n\nThe duotone lighting flares gently along the edges of her hair and the hem of her garment.\n\nAs the rotation decelerates, the glow fades slowly into a sleek silhouette.\n\nThe final frame sinks into pure black.\n\nAudio: A rising electronic swell resolves to near-silence on the final fade.\n\nAUDIO OVERVIEW (full film): Deep pulsing sub-bass room tone, subtle breath and fabric friction, a sweeping glassy whoosh on cuts, and a rising electronic swell that resolves to near-silence on the final fade.\n\nIf you're after an AI image prompt (Midjourney / Stable Diffusion, etc.), I can also compress this whole visual language into a single copy-paste-ready English prompt — just let me know which version you want.",
+            "width": [
+              "115",
+              0
+            ],
+            "height": [
+              "115",
+              1
+            ],
+            "length": [
+              "105:107",
+              1
+            ],
+            "clip": [
+              "105:13",
+              0
+            ],
+            "vae": [
+              "105:11",
+              0
+            ],
+            "first_frame": [
+              "114",
+              0
+            ]
+          },
+          "class_type": "MiniMaxH3ImageToVideo",
+          "_meta": {
+            "title": "MiniMax H3 图像转视频"
+          }
+        },
+        "105:107": {
+          "inputs": {
+            "expression": "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17",
+            "values.a": [
+              "105:111",
+              0
+            ]
+          },
+          "class_type": "ComfyMathExpression",
+          "_meta": {
+            "title": "数学表达式"
+          }
+        },
+        "105:111": {
+          "inputs": {
+            "value": 15
+          },
+          "class_type": "PrimitiveFloat",
+          "_meta": {
+            "title": "Float (duration)"
+          }
+        },
+        "105:121": {
+          "inputs": {
+            "lora_name": "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors",
+            "strength_model": 1,
+            "model": [
+              "105:6",
+              0
+            ]
+          },
+          "class_type": "LoraLoaderModelOnly",
+          "_meta": {
+            "title": "LoRA加载器（仅模型）"
+          }
+        },
+        "105:122": {
+          "inputs": {
+            "switch": [
+              "105:126",
+              0
+            ],
+            "on_false": [
+              "105:6",
+              0
+            ],
+            "on_true": [
+              "105:121",
+              0
+            ]
+          },
+          "class_type": "ComfySwitchNode",
+          "_meta": {
+            "title": "If/Else Switch (Model)"
+          }
+        },
+        "105:123": {
+          "inputs": {
+            "switch": [
+              "105:126",
+              0
+            ],
+            "on_false": [
+              "105:124",
+              0
+            ],
+            "on_true": [
+              "105:125",
+              0
+            ]
+          },
+          "class_type": "ComfySwitchNode",
+          "_meta": {
+            "title": "If/Else Switch (Steps)"
+          }
+        },
+        "105:124": {
+          "inputs": {
+            "value": 20
+          },
+          "class_type": "PrimitiveInt",
+          "_meta": {
+            "title": "整数"
+          }
+        },
+        "105:125": {
+          "inputs": {
+            "value": 8
+          },
+          "class_type": "PrimitiveInt",
+          "_meta": {
+            "title": "整数"
+          }
+        },
+        "105:126": {
+          "inputs": {
+            "value": false
+          },
+          "class_type": "PrimitiveBoolean",
+          "_meta": {
+            "title": "Boolean (Enable Lightning LoRA)"
+          }
+        }
+      },
+      "mapping": {
+        "promptNode": "105:104",
+        "promptField": "prompt",
+        "negativeNode": "",
+        "negativeField": "text",
+        "imageNode": "114",
+        "imageField": "image",
+        "outputs": {
+          "videoNode": "92"
+        }
+      }
+    }
+  },
+  "bindings": {
+    "script": "提示词生成器",
+    "characters": "Qwen-Image-2.1-viggle-turbo-t2i",
+    "environments": "Qwen-Image-2.1-viggle-turbo-t2i",
+    "storyboard": "Qwen-Image-2.1-viggle-turbo-edit",
+    "video": "video_minimax_h3_i2v",
+    "voice": "",
+    "music": ""
+  },
   "workflow": null,
   "mapping": {
     "promptNode": "",
@@ -10,5 +1271,6 @@
     "negativeField": "text",
     "imageNode": "",
     "imageField": "image"
-  }
+  },
+  "ffmpegPath": ""
 }

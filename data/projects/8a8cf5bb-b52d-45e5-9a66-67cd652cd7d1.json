@@ -1,0 +1,327 @@
+{
+  "id": "8a8cf5bb-b52d-45e5-9a66-67cd652cd7d1",
+  "idea": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。",
+  "createdAt": "2026-10-14T13:37:45.051Z",
+  "updatedAt": "2026-10-14T13:42:31.241Z",
+  "workflowSettings": {
+    "comfyUrl": "http://[::1]:8188",
+    "ffmpegPath": "",
+    "bindings": {
+      "script": "",
+      "characters": "提示词生成器",
+      "environments": "",
+      "storyboard": "",
+      "video": "",
+      "voice": "",
+      "music": ""
+    }
+  },
+  "plan": {
+    "title": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑",
+    "logline": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。",
+    "characters": [
+      {
+        "id": "character-1",
+        "name": "主角",
+        "description": "外观、年龄、服装由导演台统一确定，保持全片一致。"
+      }
+    ],
+    "locations": [
+      {
+        "id": "location-1",
+        "name": "主场景",
+        "description": "根据故事自动确定的主场景，固定家具、光线和色调。"
+      }
+    ],
+    "shots": [
+      {
+        "id": 1,
+        "title": "开场建立",
+        "action": "交代主角、地点与时间，镜头缓慢推进，制造悬念。",
+        "duration": 5,
+        "prompt": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。交代主角、地点与时间，镜头缓慢推进，制造悬念。 电影感，连续动作，保持人物和场景一致。",
+        "characterIds": [
+          "character-1"
+        ],
+        "locationId": "location-1"
+      },
+      {
+        "id": 2,
+        "title": "发现线索",
+        "action": "主角注意到一个不寻常的物件或声音，表情发生变化。",
+        "duration": 5,
+        "prompt": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。主角注意到一个不寻常的物件或声音，表情发生变化。 电影感，连续动作，保持人物和场景一致。",
+        "characterIds": [
+          "character-1"
+        ],
+        "locationId": "location-1"
+      },
+      {
+        "id": 3,
+        "title": "靠近目标",
+        "action": "主角谨慎靠近线索，镜头切换为中近景，动作连续。",
+        "duration": 5,
+        "prompt": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。主角谨慎靠近线索，镜头切换为中近景，动作连续。 电影感，连续动作，保持人物和场景一致。",
+        "characterIds": [
+          "character-1"
+        ],
+        "locationId": "location-1"
+      },
+      {
+        "id": 4,
+        "title": "意外发生",
+        "action": "线索突然产生变化，主角后退或做出本能反应。",
+        "duration": 5,
+        "prompt": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。线索突然产生变化，主角后退或做出本能反应。 电影感，连续动作，保持人物和场景一致。",
+        "characterIds": [
+          "character-1"
+        ],
+        "locationId": "location-1"
+      },
+      {
+        "id": 5,
+        "title": "真相一角",
+        "action": "特写关键物件或人物细节，透露故事的核心信息。",
+        "duration": 5,
+        "prompt": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。特写关键物件或人物细节，透露故事的核心信息。 电影感，连续动作，保持人物和场景一致。",
+        "characterIds": [
+          "character-1"
+        ],
+        "locationId": "location-1"
+      },
+      {
+        "id": 6,
+        "title": "冲突升级",
+        "action": "主角必须在两个选择之间做决定，气氛明显变紧张。",
+        "duration": 5,
+        "prompt": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。主角必须在两个选择之间做决定，气氛明显变紧张。 电影感，连续动作，保持人物和场景一致。",
+        "characterIds": [
+          "character-1"
+        ],
+        "locationId": "location-1"
+      },
+      {
+        "id": 7,
+        "title": "反转",
+        "action": "出现与观众预期不同的新信息，镜头快速切换。",
+        "duration": 5,
+        "prompt": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。出现与观众预期不同的新信息，镜头快速切换。 电影感，连续动作，保持人物和场景一致。",
+        "characterIds": [
+          "character-1"
+        ],
+        "locationId": "location-1"
+      },
+      {
+        "id": 8,
+        "title": "结尾钩子",
+        "action": "主角做出决定，画面留下一个可以继续发展的悬念。",
+        "duration": 5,
+        "prompt": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。主角做出决定，画面留下一个可以继续发展的悬念。 电影感，连续动作，保持人物和场景一致。",
+        "characterIds": [
+          "character-1"
+        ],
+        "locationId": "location-1"
+      }
+    ]
+  },
+  "stages": {
+    "script": {
+      "status": "done",
+      "outputs": [
+        {
+          "type": "json",
+          "name": "story-plan.json",
+          "data": {
+            "title": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑",
+            "logline": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。",
+            "characters": [
+              {
+                "id": "character-1",
+                "name": "主角",
+                "description": "外观、年龄、服装由导演台统一确定，保持全片一致。"
+              }
+            ],
+            "locations": [
+              {
+                "id": "location-1",
+                "name": "主场景",
+                "description": "根据故事自动确定的主场景，固定家具、光线和色调。"
+              }
+            ],
+            "shots": [
+              {
+                "id": 1,
+                "title": "开场建立",
+                "action": "交代主角、地点与时间，镜头缓慢推进，制造悬念。",
+                "duration": 5,
+                "prompt": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。交代主角、地点与时间，镜头缓慢推进，制造悬念。 电影感，连续动作，保持人物和场景一致。",
+                "characterIds": [
+                  "character-1"
+                ],
+                "locationId": "location-1"
+              },
+              {
+                "id": 2,
+                "title": "发现线索",
+                "action": "主角注意到一个不寻常的物件或声音，表情发生变化。",
+                "duration": 5,
+                "prompt": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。主角注意到一个不寻常的物件或声音，表情发生变化。 电影感，连续动作，保持人物和场景一致。",
+                "characterIds": [
+                  "character-1"
+                ],
+                "locationId": "location-1"
+              },
+              {
+                "id": 3,
+                "title": "靠近目标",
+                "action": "主角谨慎靠近线索，镜头切换为中近景，动作连续。",
+                "duration": 5,
+                "prompt": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。主角谨慎靠近线索，镜头切换为中近景，动作连续。 电影感，连续动作，保持人物和场景一致。",
+                "characterIds": [
+                  "character-1"
+                ],
+                "locationId": "location-1"
+              },
+              {
+                "id": 4,
+                "title": "意外发生",
+                "action": "线索突然产生变化，主角后退或做出本能反应。",
+                "duration": 5,
+                "prompt": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。线索突然产生变化，主角后退或做出本能反应。 电影感，连续动作，保持人物和场景一致。",
+                "characterIds": [
+                  "character-1"
+                ],
+                "locationId": "location-1"
+              },
+              {
+                "id": 5,
+                "title": "真相一角",
+                "action": "特写关键物件或人物细节，透露故事的核心信息。",
+                "duration": 5,
+                "prompt": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。特写关键物件或人物细节，透露故事的核心信息。 电影感，连续动作，保持人物和场景一致。",
+                "characterIds": [
+                  "character-1"
+                ],
+                "locationId": "location-1"
+              },
+              {
+                "id": 6,
+                "title": "冲突升级",
+                "action": "主角必须在两个选择之间做决定，气氛明显变紧张。",
+                "duration": 5,
+                "prompt": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。主角必须在两个选择之间做决定，气氛明显变紧张。 电影感，连续动作，保持人物和场景一致。",
+                "characterIds": [
+                  "character-1"
+                ],
+                "locationId": "location-1"
+              },
+              {
+                "id": 7,
+                "title": "反转",
+                "action": "出现与观众预期不同的新信息，镜头快速切换。",
+                "duration": 5,
+                "prompt": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。出现与观众预期不同的新信息，镜头快速切换。 电影感，连续动作，保持人物和场景一致。",
+                "characterIds": [
+                  "character-1"
+                ],
+                "locationId": "location-1"
+              },
+              {
+                "id": 8,
+                "title": "结尾钩子",
+                "action": "主角做出决定，画面留下一个可以继续发展的悬念。",
+                "duration": 5,
+                "prompt": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。主角做出决定，画面留下一个可以继续发展的悬念。 电影感，连续动作，保持人物和场景一致。",
+                "characterIds": [
+                  "character-1"
+                ],
+                "locationId": "location-1"
+              }
+            ]
+          }
+        },
+        {
+          "name": "1791985183293-script.txt",
+          "type": "txt",
+          "text": "integrated_multimodal_description: [Shot 1] Cinematic, moody live-action style. The scene opens on a rain-slicked urban alleyway at night. Heavy rain falls vertically, illuminated by the warm, yellow glow of a single streetlamp. A delivery courier, wearing a soaked blue uniform and a transparent rain poncho, stands under the awning of a closed shop. He is shaking off his umbrella, water dripping from the fabric. At the feet of the awning, a sleek black cat sits calmly, completely dry, looking up at the courier. The courier looks down, surprised. The camera slowly pushes in toward the courier's face as he leans forward. The courier says: <d>[English] You're not wet?</d> The black cat opens its mouth, and a young girl's voice (S1) emerges from it. The cat says: <d>[English] I'm just cold.</d>\n\n[Shot 2] The camera cuts to a close-up of the black cat. Raindrops hit the pavement around it but do not touch the cat. The cat's eyes are large, expressive, and reflect the streetlamp light. The cat's mouth moves in sync with the speech. The background is blurred, focusing on the cat's unique appearance. The cat continues speaking: <d>[English] Do you have any milk?</d> The courier's voice is heard off-screen: <d>[English] Sure thing, little one.</d>\n\n[Shot 3] The courier kneels down slowly, extending a hand toward the cat. The cat steps forward and rubs against his hand. As the courier's hand touches the cat's fur, a soft, magical golden light emanates from the contact point. The camera pulls back slightly to show the courier's gentle expression. The courier whispers: <d>[English] Hello, Mia.</d> The cat looks up with recognition. The cat replies: <d>[English] Dad?</d>\n\n[Shot 4] A medium shot shows the courier picking up the cat and holding it close to his chest, shielding it from the rain. He is smiling with tears mixing with rain on his face. The rain continues to fall heavily in the background, but the immediate area around them feels warm and intimate. The camera slowly rotates around them in a subtle arc shot. The courier says: <d>[English] I found you.</d> The cat nuzzles into his neck. The scene fades slightly as the rain intensifies, emphasizing the emotional reunion.\n\noverall_soundscape: Heavy, continuous rain falling on pavement and awnings. The rustle of the courier's wet raincoat and the shaking of the umbrella. Muffled distant city traffic sounds, providing an urban night atmosphere. The soft padding of the cat's paws on the wet ground. The courier's audible, emotional breathing and the slight splash of water as he kneels.\n\nnon_diegetic_music: A melancholic yet heartwarming cinematic score begins with a solo cello playing a slow, mournful melody, reflecting the loneliness of the rain. As the cat speaks and the courier recognizes her, a soft piano joins the cello, adding a layer of warmth and hope. The music swells gently with strings during the final hug, creating an emotional crescendo that underscores the reunion, then fades softly into the sound of rain.",
+          "nodeId": "5",
+          "outputKind": "",
+          "localPath": "D:\\Source\\LongV\\data\\projects\\8a8cf5bb-b52d-45e5-9a66-67cd652cd7d1\\script\\1791985183293-script.txt",
+          "url": "/api/projects/8a8cf5bb-b52d-45e5-9a66-67cd652cd7d1/files/script%2F1791985183293-script.txt"
+        }
+      ],
+      "runs": 1,
+      "error": "",
+      "startedAt": "2026-10-14T13:38:50.134Z",
+      "finishedAt": "2026-10-14T13:39:43.296Z"
+    },
+    "characters": {
+      "status": "done",
+      "outputs": [
+        {
+          "type": "asset",
+          "entityId": "character-1",
+          "entityName": "主角",
+          "files": [
+            {
+              "name": "1791985351238-characters.txt",
+              "type": "txt",
+              "text": "integrated_multimodal_description: Cinematic, moody live-action style. [Shot 1] The scene opens on a rain-slicked urban alleyway at night. Heavy rain falls vertically, illuminated by the warm, yellow glow of a single streetlamp. A delivery courier, wearing a soaked blue uniform and a transparent rain poncho, stands under the awning of a closed shop. He is shaking off his umbrella, water dripping from the fabric. At the feet of the awning, a sleek black cat sits calmly, completely dry, looking up at the courier. The courier looks down, surprised. The camera slowly pushes in toward the courier's face as he leans forward. The courier says: <d>[English] You're not wet?</d> The black cat opens its mouth, and a young girl's voice (S1) emerges from it. The cat says: <d>[English] I'm just cold.</d> [Shot 2] The camera cuts to a close-up of the black cat. Raindrops hit the pavement around it but do not touch the cat. The cat's eyes are large, expressive, and reflect the streetlamp light. The cat's mouth moves in sync with the speech. The background is blurred, focusing on the cat's unique appearance. The cat continues speaking: <d>[English] Do you have any milk?</d> The courier's voice is heard off-screen: <d>[English] Sure thing, little one.</d> [Shot 3] The courier kneels down slowly, extending a hand toward the cat. The cat steps forward and rubs against his hand. As the courier's hand touches the cat's fur, a soft, magical golden light emanates from the contact point. The camera pulls back slightly to show the courier's gentle expression. The courier whispers: <d>[English] Hello, Mia.</d> The cat looks up with recognition. The cat replies: <d>[English] Dad?</d> [Shot 4] A medium shot shows the courier picking up the cat and holding it close to his chest, shielding it from the rain. He is smiling with tears mixing with rain on his face. The rain continues to fall heavily in the background, but the immediate area around them feels warm and intimate. The camera slowly rotates around them in a subtle arc shot. The courier says: <d>[English] I found you.</d> The cat nuzzles into his neck. The scene fades slightly as the rain intensifies, emphasizing the emotional reunion.\noverall_soundscape: Heavy, continuous rain falling on pavement and awnings. The rustle of the courier's wet raincoat and the shaking of the umbrella. Muffled distant city traffic sounds, providing an urban night atmosphere. The soft padding of the cat's paws on the wet ground. The courier's audible, emotional breathing and the slight splash of water as he kneels.\nnon_diegetic_music: A melancholic yet heartwarming cinematic score begins with a solo cello playing a slow, mournful melody, reflecting the loneliness of the rain. As the cat speaks and the courier recognizes her, a soft piano joins the cello, adding a layer of warmth and hope. The music swells gently with strings during the final hug, creating an emotional crescendo that underscores the reunion, then fades softly into the sound of rain.",
+              "nodeId": "5",
+              "outputKind": "",
+              "localPath": "D:\\Source\\LongV\\data\\projects\\8a8cf5bb-b52d-45e5-9a66-67cd652cd7d1\\characters\\1791985351238-characters.txt",
+              "url": "/api/projects/8a8cf5bb-b52d-45e5-9a66-67cd652cd7d1/files/characters%2F1791985351238-characters.txt"
+            }
+          ],
+          "prompt": "角色设定图：integrated_multimodal_description: [Shot 1] Cinematic, moody live-action style. The scene opens on a rain-slicked urban alleyway at night. Heavy rain falls vertically, illuminated by the warm, yellow glow of a single streetlamp. A delivery courier, wearing a soaked blue uniform and a transparent rain poncho, stands under the awning of a closed shop. He is shaking off his umbrella, water dripping from the fabric. At the feet of the awning, a sleek black cat sits calmly, completely dry, looking up at the courier. The courier looks down, surprised. The camera slowly pushes in toward the courier's face as he leans forward. The courier says: <d>[English] You're not wet?</d> The black cat opens its mouth, and a young girl's voice (S1) emerges from it. The cat says: <d>[English] I'm just cold.</d>\n\n[Shot 2] The camera cuts to a close-up of the black cat. Raindrops hit the pavement around it but do not touch the cat. The cat's eyes are large, expressive, and reflect the streetlamp light. The cat's mouth moves in sync with the speech. The background is blurred, focusing on the cat's unique appearance. The cat continues speaking: <d>[English] Do you have any milk?</d> The courier's voice is heard off-screen: <d>[English] Sure thing, little one.</d>\n\n[Shot 3] The courier kneels down slowly, extending a hand toward the cat. The cat steps forward and rubs against his hand. As the courier's hand touches the cat's fur, a soft, magical golden light emanates from the contact point. The camera pulls back slightly to show the courier's gentle expression. The courier whispers: <d>[English] Hello, Mia.</d> The cat looks up with recognition. The cat replies: <d>[English] Dad?</d>\n\n[Shot 4] A medium shot shows the courier picking up the cat and holding it close to his chest, shielding it from the rain. He is smiling with tears mixing with rain on his face. The rain continues to fall heavily in the background, but the immediate area around them feels warm and intimate. The camera slowly rotates around them in a subtle arc shot. The courier says: <d>[English] I found you.</d> The cat nuzzles into his neck. The scene fades slightly as the rain intensifies, emphasizing the emotional reunion.\n\noverall_soundscape: Heavy, continuous rain falling on pavement and awnings. The rustle of the courier's wet raincoat and the shaking of the umbrella. Muffled distant city traffic sounds, providing an urban night atmosphere. The soft padding of the cat's paws on the wet ground. The courier's audible, emotional breathing and the slight splash of water as he kneels.\n\nnon_diegetic_music: A melancholic yet heartwarming cinematic score begins with a solo cello playing a slow, mournful melody, reflecting the loneliness of the rain. As the cat speaks and the courier recognizes her, a soft piano joins the cello, adding a layer of warmth and hope. The music swells gently with strings during the final hug, creating an emotional crescendo that underscores the reunion, then fades softly into the sound of rain.。当前角色：主角。外观、年龄、服装由导演台统一确定，保持全片一致。 请设计正面、侧面、半身、全身参考，服装和发型清晰，纯净背景，无文字，无水印，电影写实风格。"
+        }
+      ],
+      "runs": 2,
+      "error": "",
+      "startedAt": "2026-10-14T13:41:40.288Z",
+      "finishedAt": "2026-10-14T13:42:31.241Z"
+    },
+    "environments": {
+      "status": "idle",
+      "outputs": [],
+      "runs": 0
+    },
+    "storyboard": {
+      "status": "idle",
+      "outputs": [],
+      "runs": 0
+    },
+    "video": {
+      "status": "idle",
+      "outputs": [],
+      "runs": 0
+    },
+    "edit": {
+      "status": "idle",
+      "outputs": [],
+      "runs": 0
+    },
+    "voice": {
+      "status": "idle",
+      "outputs": [],
+      "runs": 0
+    },
+    "subtitles": {
+      "status": "idle",
+      "outputs": [],
+      "runs": 0
+    },
+    "music": {
+      "status": "idle",
+      "outputs": [],
+      "runs": 0
+    },
+    "export": {
+      "status": "idle",
+      "outputs": [],
+      "runs": 0
+    }
+  },
+  "cancelRequested": false,
+  "scriptText": "integrated_multimodal_description: [Shot 1] Cinematic, moody live-action style. The scene opens on a rain-slicked urban alleyway at night. Heavy rain falls vertically, illuminated by the warm, yellow glow of a single streetlamp. A delivery courier, wearing a soaked blue uniform and a transparent rain poncho, stands under the awning of a closed shop. He is shaking off his umbrella, water dripping from the fabric. At the feet of the awning, a sleek black cat sits calmly, completely dry, looking up at the courier. The courier looks down, surprised. The camera slowly pushes in toward the courier's face as he leans forward. The courier says: <d>[English] You're not wet?</d> The black cat opens its mouth, and a young girl's voice (S1) emerges from it. The cat says: <d>[English] I'm just cold.</d>\n\n[Shot 2] The camera cuts to a close-up of the black cat. Raindrops hit the pavement around it but do not touch the cat. The cat's eyes are large, expressive, and reflect the streetlamp light. The cat's mouth moves in sync with the speech. The background is blurred, focusing on the cat's unique appearance. The cat continues speaking: <d>[English] Do you have any milk?</d> The courier's voice is heard off-screen: <d>[English] Sure thing, little one.</d>\n\n[Shot 3] The courier kneels down slowly, extending a hand toward the cat. The cat steps forward and rubs against his hand. As the courier's hand touches the cat's fur, a soft, magical golden light emanates from the contact point. The camera pulls back slightly to show the courier's gentle expression. The courier whispers: <d>[English] Hello, Mia.</d> The cat looks up with recognition. The cat replies: <d>[English] Dad?</d>\n\n[Shot 4] A medium shot shows the courier picking up the cat and holding it close to his chest, shielding it from the rain. He is smiling with tears mixing with rain on his face. The rain continues to fall heavily in the background, but the immediate area around them feels warm and intimate. The camera slowly rotates around them in a subtle arc shot. The courier says: <d>[English] I found you.</d> The cat nuzzles into his neck. The scene fades slightly as the rain intensifies, emphasizing the emotional reunion.\n\noverall_soundscape: Heavy, continuous rain falling on pavement and awnings. The rustle of the courier's wet raincoat and the shaking of the umbrella. Muffled distant city traffic sounds, providing an urban night atmosphere. The soft padding of the cat's paws on the wet ground. The courier's audible, emotional breathing and the slight splash of water as he kneels.\n\nnon_diegetic_music: A melancholic yet heartwarming cinematic score begins with a solo cello playing a slow, mournful melody, reflecting the loneliness of the rain. As the cat speaks and the courier recognizes her, a soft piano joins the cello, adding a layer of warmth and hope. The music swells gently with strings during the final hug, creating an emotional crescendo that underscores the reunion, then fades softly into the sound of rain."
+}

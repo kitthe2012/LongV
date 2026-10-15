@@ -2,7 +2,7 @@
   "id": "99bbd876-02ee-4683-9c26-40690e88c337",
   "idea": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。",
   "createdAt": "2026-10-14T07:03:59.315Z",
-  "updatedAt": "2026-10-14T08:18:06.247Z",
+  "updatedAt": "2026-10-14T15:42:08.305Z",
   "plan": {
     "title": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑",
     "logline": "一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。",
@@ -165,29 +165,340 @@
       "finishedAt": "2026-10-14T08:18:06.247Z"
     },
     "characters": {
-      "status": "idle",
-      "outputs": [],
-      "runs": 0
+      "status": "done",
+      "outputs": [
+        {
+          "type": "asset",
+          "entityName": "主角",
+          "files": [
+            {
+              "name": "1791985909105-characters.txt",
+              "type": "txt",
+              "text": "角色设定图：一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。当前角色：主角。外观、年龄、服装由导演台统一确定，保持全片一致。 请设计正面、侧面、半身、全身参考，服装和发型清晰，纯净背景，无文字，无水印，电影写实风格。",
+              "nodeId": "17",
+              "outputKind": "",
+              "localPath": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\characters\\1791985909105-characters.txt",
+              "url": "/api/projects/99bbd876-02ee-4683-9c26-40690e88c337/files/characters%2F1791985909105-characters.txt"
+            },
+            {
+              "name": "1791985909114-t2i_00004_.png",
+              "type": "png",
+              "nodeId": "25",
+              "outputKind": "",
+              "localPath": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\characters\\1791985909114-t2i_00004_.png",
+              "url": "/api/projects/99bbd876-02ee-4683-9c26-40690e88c337/files/characters%2F1791985909114-t2i_00004_.png"
+            }
+          ],
+          "prompt": "角色设定图：一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。当前角色：主角。外观、年龄、服装由导演台统一确定，保持全片一致。 请设计正面、侧面、半身、全身参考，服装和发型清晰，纯净背景，无文字，无水印，电影写实风格。"
+        }
+      ],
+      "runs": 1,
+      "error": "",
+      "startedAt": "2026-10-14T13:51:28.900Z",
+      "finishedAt": "2026-10-14T13:51:49.119Z"
     },
     "environments": {
-      "status": "idle",
-      "outputs": [],
-      "runs": 0
+      "status": "done",
+      "outputs": [
+        {
+          "type": "asset",
+          "entityName": "主场景",
+          "files": [
+            {
+              "name": "1791986164817-environments.txt",
+              "type": "txt",
+              "text": "环境母图：当前场景为主场景。根据故事自动确定的主场景，固定家具、光线和色调。 只生成空场景环境概念图，不出现任何人类、人物、角色、脸、身体、剪影或动物。明确空间布局、建筑与家具、关键道具、时间、天气和光线，画面中不得出现人物主体，电影写实风格，竖屏9:16。",
+              "nodeId": "17",
+              "outputKind": "",
+              "localPath": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\environments\\1791986164817-environments.txt",
+              "url": "/api/projects/99bbd876-02ee-4683-9c26-40690e88c337/files/environments%2F1791986164817-environments.txt"
+            },
+            {
+              "name": "1791986164823-t2i_00007_.png",
+              "type": "png",
+              "nodeId": "25",
+              "outputKind": "",
+              "localPath": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\environments\\1791986164823-t2i_00007_.png",
+              "url": "/api/projects/99bbd876-02ee-4683-9c26-40690e88c337/files/environments%2F1791986164823-t2i_00007_.png"
+            }
+          ],
+          "prompt": "环境母图：当前场景为主场景。根据故事自动确定的主场景，固定家具、光线和色调。 只生成空场景环境概念图，不出现任何人类、人物、角色、脸、身体、剪影或动物。明确空间布局、建筑与家具、关键道具、时间、天气和光线，画面中不得出现人物主体，电影写实风格，竖屏9:16。"
+        }
+      ],
+      "runs": 3,
+      "error": "",
+      "startedAt": "2026-10-14T13:55:56.687Z",
+      "finishedAt": "2026-10-14T13:56:04.826Z"
     },
     "storyboard": {
-      "status": "idle",
-      "outputs": [],
-      "runs": 0
+      "status": "done",
+      "outputs": [
+        {
+          "type": "storyboard",
+          "shotId": 1,
+          "shotTitle": "开场建立",
+          "files": [
+            {
+              "name": "1791987050332-edit_00001_.png",
+              "type": "png",
+              "nodeId": "25",
+              "outputKind": "image",
+              "localPath": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\storyboard\\1791987050332-edit_00001_.png",
+              "url": "/api/projects/99bbd876-02ee-4683-9c26-40690e88c337/files/storyboard%2F1791987050332-edit_00001_.png"
+            }
+          ],
+          "prompt": "镜头1关键帧：一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。动作：交代主角、地点与时间，镜头缓慢推进，制造悬念。。机位：电影感中景。对白：无。请生成适合后续图生视频的单个镜头开始画面，保持角色、场景和色彩一致。"
+        },
+        {
+          "type": "storyboard",
+          "shotId": 2,
+          "shotTitle": "发现线索",
+          "files": [
+            {
+              "name": "1791987066462-edit_00002_.png",
+              "type": "png",
+              "nodeId": "25",
+              "outputKind": "image",
+              "localPath": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\storyboard\\1791987066462-edit_00002_.png",
+              "url": "/api/projects/99bbd876-02ee-4683-9c26-40690e88c337/files/storyboard%2F1791987066462-edit_00002_.png"
+            }
+          ],
+          "prompt": "镜头2关键帧：一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。动作：主角注意到一个不寻常的物件或声音，表情发生变化。。机位：电影感中景。对白：无。请生成适合后续图生视频的单个镜头开始画面，保持角色、场景和色彩一致。"
+        },
+        {
+          "type": "storyboard",
+          "shotId": 3,
+          "shotTitle": "靠近目标",
+          "files": [
+            {
+              "name": "1791987082743-edit_00003_.png",
+              "type": "png",
+              "nodeId": "25",
+              "outputKind": "image",
+              "localPath": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\storyboard\\1791987082743-edit_00003_.png",
+              "url": "/api/projects/99bbd876-02ee-4683-9c26-40690e88c337/files/storyboard%2F1791987082743-edit_00003_.png"
+            }
+          ],
+          "prompt": "镜头3关键帧：一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。动作：主角谨慎靠近线索，镜头切换为中近景，动作连续。。机位：电影感中景。对白：无。请生成适合后续图生视频的单个镜头开始画面，保持角色、场景和色彩一致。"
+        },
+        {
+          "type": "storyboard",
+          "shotId": 4,
+          "shotTitle": "意外发生",
+          "files": [
+            {
+              "name": "1791987096922-edit_00004_.png",
+              "type": "png",
+              "nodeId": "25",
+              "outputKind": "image",
+              "localPath": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\storyboard\\1791987096922-edit_00004_.png",
+              "url": "/api/projects/99bbd876-02ee-4683-9c26-40690e88c337/files/storyboard%2F1791987096922-edit_00004_.png"
+            }
+          ],
+          "prompt": "镜头4关键帧：一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。动作：线索突然产生变化，主角后退或做出本能反应。。机位：电影感中景。对白：无。请生成适合后续图生视频的单个镜头开始画面，保持角色、场景和色彩一致。"
+        },
+        {
+          "type": "storyboard",
+          "shotId": 5,
+          "shotTitle": "真相一角",
+          "files": [
+            {
+              "name": "1791987112115-edit_00005_.png",
+              "type": "png",
+              "nodeId": "25",
+              "outputKind": "image",
+              "localPath": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\storyboard\\1791987112115-edit_00005_.png",
+              "url": "/api/projects/99bbd876-02ee-4683-9c26-40690e88c337/files/storyboard%2F1791987112115-edit_00005_.png"
+            }
+          ],
+          "prompt": "镜头5关键帧：一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。动作：特写关键物件或人物细节，透露故事的核心信息。。机位：电影感中景。对白：无。请生成适合后续图生视频的单个镜头开始画面，保持角色、场景和色彩一致。"
+        },
+        {
+          "type": "storyboard",
+          "shotId": 6,
+          "shotTitle": "冲突升级",
+          "files": [
+            {
+              "name": "1791987126263-edit_00006_.png",
+              "type": "png",
+              "nodeId": "25",
+              "outputKind": "image",
+              "localPath": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\storyboard\\1791987126263-edit_00006_.png",
+              "url": "/api/projects/99bbd876-02ee-4683-9c26-40690e88c337/files/storyboard%2F1791987126263-edit_00006_.png"
+            }
+          ],
+          "prompt": "镜头6关键帧：一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。动作：主角必须在两个选择之间做决定，气氛明显变紧张。。机位：电影感中景。对白：无。请生成适合后续图生视频的单个镜头开始画面，保持角色、场景和色彩一致。"
+        },
+        {
+          "type": "storyboard",
+          "shotId": 7,
+          "shotTitle": "反转",
+          "files": [
+            {
+              "name": "1791987139757-edit_00007_.png",
+              "type": "png",
+              "nodeId": "25",
+              "outputKind": "image",
+              "localPath": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\storyboard\\1791987139757-edit_00007_.png",
+              "url": "/api/projects/99bbd876-02ee-4683-9c26-40690e88c337/files/storyboard%2F1791987139757-edit_00007_.png"
+            }
+          ],
+          "prompt": "镜头7关键帧：一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。动作：出现与观众预期不同的新信息，镜头快速切换。。机位：电影感中景。对白：无。请生成适合后续图生视频的单个镜头开始画面，保持角色、场景和色彩一致。"
+        },
+        {
+          "type": "storyboard",
+          "shotId": 8,
+          "shotTitle": "结尾钩子",
+          "files": [
+            {
+              "name": "1791987154914-edit_00008_.png",
+              "type": "png",
+              "nodeId": "25",
+              "outputKind": "image",
+              "localPath": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\storyboard\\1791987154914-edit_00008_.png",
+              "url": "/api/projects/99bbd876-02ee-4683-9c26-40690e88c337/files/storyboard%2F1791987154914-edit_00008_.png"
+            }
+          ],
+          "prompt": "镜头8关键帧：一个快递员在雨夜收到一只会说话的黑猫，最后发现黑猫是失踪多年的女儿。。动作：主角做出决定，画面留下一个可以继续发展的悬念。。机位：电影感中景。对白：无。请生成适合后续图生视频的单个镜头开始画面，保持角色、场景和色彩一致。"
+        }
+      ],
+      "runs": 3,
+      "error": "",
+      "startedAt": "2026-10-14T14:10:35.130Z",
+      "finishedAt": "2026-10-14T14:12:34.916Z"
     },
     "video": {
-      "status": "idle",
-      "outputs": [],
-      "runs": 0
+      "status": "error",
+      "outputs": [
+        {
+          "type": "video",
+          "shotId": 1,
+          "promptId": "9b1f0ab6-6156-4f17-bcf6-d05c5c9e8b08",
+          "files": [
+            {
+              "name": "1791991954683-MiniMax_H3_00077_.mp4",
+              "type": "mp4",
+              "nodeId": "92",
+              "outputKind": "video",
+              "localPath": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\video\\1791991954683-MiniMax_H3_00077_.mp4",
+              "url": "/api/projects/99bbd876-02ee-4683-9c26-40690e88c337/files/video%2F1791991954683-MiniMax_H3_00077_.mp4"
+            },
+            {
+              "name": "1791991954683-MiniMax_H3_00077_-last.png",
+              "type": "png",
+              "localPath": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\video\\1791991954683-MiniMax_H3_00077_-last.png",
+              "url": "/api/projects/99bbd876-02ee-4683-9c26-40690e88c337/files/video%2F1791991954683-MiniMax_H3_00077_-last.png"
+            }
+          ],
+          "runtime": {
+            "latentId": "longv-99bbd876-02ee-4683-9c26-40690e88c337-1-1791991427333",
+            "text": "",
+            "lastFrame": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\video\\1791991954683-MiniMax_H3_00077_-last.png",
+            "video": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\video\\1791991954683-MiniMax_H3_00077_.mp4"
+          }
+        },
+        {
+          "type": "video",
+          "shotId": 2,
+          "promptId": "3be4eb90-bb8c-4c61-8d8f-c5cb8e801607",
+          "files": [
+            {
+              "name": "1791992470700-MiniMax_H3_00078_.mp4",
+              "type": "mp4",
+              "nodeId": "92",
+              "outputKind": "video",
+              "localPath": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\video\\1791992470700-MiniMax_H3_00078_.mp4",
+              "url": "/api/projects/99bbd876-02ee-4683-9c26-40690e88c337/files/video%2F1791992470700-MiniMax_H3_00078_.mp4"
+            },
+            {
+              "name": "1791992470700-MiniMax_H3_00078_-last.png",
+              "type": "png",
+              "localPath": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\video\\1791992470700-MiniMax_H3_00078_-last.png",
+              "url": "/api/projects/99bbd876-02ee-4683-9c26-40690e88c337/files/video%2F1791992470700-MiniMax_H3_00078_-last.png"
+            }
+          ],
+          "runtime": {
+            "latentId": "longv-99bbd876-02ee-4683-9c26-40690e88c337-2-1791991955066",
+            "text": "",
+            "lastFrame": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\video\\1791992470700-MiniMax_H3_00078_-last.png",
+            "video": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\video\\1791992470700-MiniMax_H3_00078_.mp4"
+          }
+        }
+      ],
+      "runs": 4,
+      "error": "部分镜头生成失败，可单独重试失败镜头。",
+      "startedAt": "2026-10-14T15:23:47.321Z",
+      "shots": {
+        "1": {
+          "status": "done",
+          "promptId": "9b1f0ab6-6156-4f17-bcf6-d05c5c9e8b08",
+          "latentId": "longv-99bbd876-02ee-4683-9c26-40690e88c337-1-1791991427333",
+          "lastFrame": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\video\\1791991954683-MiniMax_H3_00077_-last.png",
+          "video": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\video\\1791991954683-MiniMax_H3_00077_.mp4"
+        },
+        "2": {
+          "status": "done",
+          "promptId": "3be4eb90-bb8c-4c61-8d8f-c5cb8e801607",
+          "latentId": "longv-99bbd876-02ee-4683-9c26-40690e88c337-2-1791991955066",
+          "lastFrame": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\video\\1791992470700-MiniMax_H3_00078_-last.png",
+          "video": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\video\\1791992470700-MiniMax_H3_00078_.mp4"
+        },
+        "3": {
+          "status": "error",
+          "error": "[\"execution_start\",{\"prompt_id\":\"03c48e8b-342a-4175-b128-3cf63733dd8d\",\"timestamp\":1791992470844}]\n[\"execution_cached\",{\"nodes\":[\"115\",\"105:11\",\"105:24\",\"105:17\",\"105:9\",\"105:6\",\"105:13\",\"105:15\",\"105:107\",\"105:111\",\"105:122\",\"105:123\",\"105:124\",\"105:126\"],\"prompt_id\":\"03c48e8b-342a-4175-b128-3cf63733dd8d\",\"timestamp\":1791992470852}]\n[\"execution_interrupted\",{\"prompt_id\":\"03c48e8b-342a-4175-b128-3cf63733dd8d\",\"node_id\":\"105:14\",\"node_type\":\"SamplerCustomAdvanced\",\"executed\":[\"105:16\",\"105:104\",\"114\"],\"timestamp\":1791992514541}]"
+        },
+        "4": {
+          "status": "error",
+          "error": "无法连接 ComfyUI：fetch failed"
+        },
+        "5": {
+          "status": "error",
+          "error": "无法连接 ComfyUI：fetch failed"
+        },
+        "6": {
+          "status": "error",
+          "error": "无法连接 ComfyUI：fetch failed"
+        },
+        "7": {
+          "status": "error",
+          "error": "无法连接 ComfyUI：fetch failed"
+        },
+        "8": {
+          "status": "error",
+          "error": "无法连接 ComfyUI：fetch failed"
+        }
+      },
+      "finishedAt": "2026-10-14T15:42:08.304Z"
     },
     "edit": {
       "status": "idle",
       "outputs": [],
       "runs": 0
     }
+  },
+  "cancelRequested": false,
+  "workflowSettings": {
+    "comfyUrl": "http://[::1]:8188",
+    "comfyTimeoutMs": 2400000,
+    "videoWidth": 1024,
+    "videoHeight": 576,
+    "videoDurationSec": 5,
+    "ffmpegPath": "",
+    "bindings": {
+      "script": "提示词生成器",
+      "characters": "Qwen-Image-2.1-viggle-turbo-t2i",
+      "environments": "Qwen-Image-2.1-viggle-turbo-t2i",
+      "storyboard": "Qwen-Image-2.1-viggle-turbo-edit",
+      "video": "video_minimax_h3_i2v",
+      "voice": "",
+      "music": ""
+    }
+  },
+  "sequence": {
+    "currentShot": 8,
+    "previousLatentId": "longv-99bbd876-02ee-4683-9c26-40690e88c337-2-1791991955066",
+    "previousFrame": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\video\\1791992470700-MiniMax_H3_00078_-last.png",
+    "previousVideo": "D:\\Source\\LongV\\data\\projects\\99bbd876-02ee-4683-9c26-40690e88c337\\video\\1791992470700-MiniMax_H3_00078_.mp4",
+    "currentLatentId": "longv-99bbd876-02ee-4683-9c26-40690e88c337-2-1791991955066"
   }
 }

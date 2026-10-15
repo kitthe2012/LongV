@@ -16,13 +16,13 @@ const STAGES = ['script', 'characters', 'environments', 'storyboard', 'video', '
 const POST_STAGES = ['voice', 'subtitles', 'music', 'export'];
 const ALL_STAGES = [...STAGES, ...POST_STAGES];
 const stageNames = { script: '剧本', characters: '角色', environments: '环境', storyboard: '分镜', video: '视频', edit: '合成', voice: '配音', subtitles: '字幕', music: '音乐音效', export: '发布导出' };
-const COMFY_TIMEOUT_MS = Number(process.env.LONGV_COMFY_TIMEOUT || 90000);
+const COMFY_TIMEOUT_MS = Number(process.env.LONGV_COMFY_TIMEOUT || 240000);
 const runtimeLogs = new Map();
 const activeComfy = new Map();
 
 async function ensure() {
   await fs.mkdir(PROJECTS, { recursive: true });
-  try { await fs.access(SETTINGS); } catch { await writeJson(SETTINGS, { comfyUrl: 'http://127.0.0.1:8188', workflows: {}, bindings: {}, workflow: null, mapping: { promptNode: '', promptField: 'text', negativeNode: '', negativeField: 'text', imageNode: '', imageField: 'image' } }); }
+  try { await fs.access(SETTINGS); } catch { await writeJson(SETTINGS, { comfyUrl: 'http://127.0.0.1:8188', comfyTimeoutMs: COMFY_TIMEOUT_MS, workflows: {}, bindings: {}, workflow: null, mapping: { promptNode: '', promptField: 'text', negativeNode: '', negativeField: 'text', imageNode: '', imageField: 'image' } }); }
   const files = await fs.readdir(PROJECTS);
   for (const file of files.filter(name => name.endsWith('.json'))) {
     const project = await readJson(path.join(PROJECTS, file));
@@ -35,7 +35,11 @@ async function ensure() {
   }
 }
 function normalizeSettings(settings = {}) {
-  const normalized = { comfyUrl: 'http://127.0.0.1:8188', workflows: {}, bindings: {}, ...settings };
+  const normalized = { comfyUrl: 'http://127.0.0.1:8188', comfyTimeoutMs: COMFY_TIMEOUT_MS, videoWidth: 576, videoHeight: 1024, videoDurationSec: 5, workflows: {}, bindings: {}, ...settings };
+  normalized.comfyTimeoutMs = Math.min(3600000, Math.max(1000, Number(normalized.comfyTimeoutMs) || COMFY_TIMEOUT_MS));
+  normalized.videoWidth = Math.max(64, Math.round(Number(normalized.videoWidth) || 576));
+  normalized.videoHeight = Math.max(64, Math.round(Number(normalized.videoHeight) || 1024));
+  normalized.videoDurationSec = Math.min(120, Math.max(1, Number(normalized.videoDurationSec) || 5));
   normalized.workflows = normalized.workflows || {};
   normalized.bindings = normalized.bindings || {};
   if (normalized.workflow && !normalized.workflows.default) normalized.workflows.default = { name: 'default', workflow: normalized.workflow, mapping: normalized.mapping || {} };
@@ -134,7 +138,7 @@ function promptFor(project, stage, shot = null, entity = null) {
   const plan = project.plan;
   const story = project.scriptText || plan.logline;
   if (stage === 'characters') return `角色设定图：${story}。当前角色：${entity?.name || '主角'}。${entity?.description || ''} 请设计正面、侧面、半身、全身参考，服装和发型清晰，纯净背景，无文字，无水印，电影写实风格。`;
-  if (stage === 'environments') return `环境母图：${story}。当前场景：${entity?.name || '主场景'}。${entity?.description || ''} 请生成可连续拍摄的空镜头，明确空间布局、关键道具、时间、天气和光线，没有人物，电影写实风格，竖屏9:16。`;
+  if (stage === 'environments') return `环境母图：当前场景为${entity?.name || '主场景'}。${entity?.description || ''} 只生成空场景环境概念图，不出现任何人类、人物、角色、脸、身体、剪影或动物。明确空间布局、建筑与家具、关键道具、时间、天气和光线，画面中不得出现人物主体，电影写实风格，竖屏9:16。`;
   if (stage === 'storyboard' && shot) return `镜头${shot.id}关键帧：${story}。动作：${shot.action}。机位：${shot.camera || '电影感中景'}。对白：${shot.dialogue || '无'}。请生成适合后续图生视频的单个镜头开始画面，保持角色、场景和色彩一致。`;
   if (stage === 'video' && shot) return `${shot.prompt} 故事背景：${story}。镜头编号：${shot.id}/${plan.shots.length}。${shot.camera || ''}。${shot.dialogue ? `对白：${shot.dialogue}。` : ''}竖屏短剧镜头，${shot.duration}秒，镜头运动自然，人物外观和场景布局与参考图一致，不出现字幕、水印或多余人物。`;
   return story;
@@ -154,8 +158,35 @@ function applyMapping(workflow, mapping, values) {
   const set = (nodeId, field, value) => { if (nodeId && result[nodeId]?.inputs && field) result[nodeId].inputs[field] = value; };
   set(mapping.promptNode, mapping.promptField, values.prompt);
   set(mapping.negativeNode, mapping.negativeField, values.negative || 'text, watermark, logo, distorted, low quality');
-  if (values.image) set(mapping.imageNode, mapping.imageField, values.image);
+  if (values.image) {
+    set(mapping.imageNode, mapping.imageField, values.image);
+    // LongV supplies one stage input image. Detach optional extra image slots
+    // that still point at example files from a multi-image template.
+    for (const node of Object.values(result)) {
+      if (!node?.inputs) continue;
+      for (const [field, value] of Object.entries(node.inputs)) {
+        if (!/^images\.image_\d+$/i.test(field) || !Array.isArray(value)) continue;
+        const sourceNode = result[String(value[0])];
+        if (sourceNode?.class_type === 'LoadImage' && String(value[0]) !== String(mapping.imageNode)) {
+          node.inputs[field] = null;
+        }
+      }
+    }
+  }
   return deepReplace(result, values);
+}
+function applyVideoSettings(workflow, width, height, frames) {
+  for (const node of Object.values(workflow)) {
+    if (!node?.inputs || !/video|createvideo|minimaxh3/i.test(String(node.class_type || ''))) continue;
+    if (Object.hasOwn(node.inputs, 'width')) node.inputs.width = width;
+    if (Object.hasOwn(node.inputs, 'height')) node.inputs.height = height;
+    if (Object.hasOwn(node.inputs, 'length')) node.inputs.length = frames;
+    if (Object.hasOwn(node.inputs, 'duration')) node.inputs.duration = Math.max(1, Math.round(frames / 24));
+  }
+}
+function framesForVideoDuration(seconds) {
+  const base = Math.max(5, Math.round(Number(seconds) * 24));
+  return base + (5 - (base % 17) + 17) % 17;
 }
 
 function validateWorkflow(workflow) {
@@ -176,7 +207,7 @@ async function uploadImageToComfy(settings, localPath) {
   const form = new FormData();
   form.append('image', new Blob([data], { type: fileMime(localPath) }), path.basename(localPath));
   form.append('overwrite', 'true');
-  const response = await comfyFetch(settings.comfyUrl || 'http://127.0.0.1:8188', '/upload/image', { method: 'POST', body: form });
+  const response = await comfyFetch(settings.comfyUrl || 'http://127.0.0.1:8188', '/upload/image', { method: 'POST', body: form }, settings.comfyTimeoutMs);
   const uploaded = await response.json();
   if (!uploaded.name) throw new Error(`ComfyUI 图片上传失败：${JSON.stringify(uploaded)}`);
   return uploaded.subfolder ? `${uploaded.subfolder}/${uploaded.name}` : uploaded.name;
@@ -199,13 +230,14 @@ function inputAssetForStage(project, stage, shot = null) {
   return null;
 }
 
-async function comfyFetch(base, endpoint, options = {}) {
+async function comfyFetch(base, endpoint, options = {}, timeoutMs = COMFY_TIMEOUT_MS) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), COMFY_TIMEOUT_MS);
+  const effectiveTimeoutMs = Math.min(3600000, Math.max(1000, Number(timeoutMs) || COMFY_TIMEOUT_MS));
+  const timer = setTimeout(() => controller.abort(), effectiveTimeoutMs);
   let response;
   try { response = await fetch(`${base.replace(/\/$/, '')}${endpoint}`, { ...options, signal: controller.signal }); }
   catch (error) {
-    if (error.name === 'AbortError') throw new Error(`ComfyUI 请求超时（${Math.round(COMFY_TIMEOUT_MS / 1000)} 秒）：${endpoint}`);
+    if (error.name === 'AbortError') throw new Error(`ComfyUI 请求超时（${Math.round(effectiveTimeoutMs / 1000)} 秒）：${endpoint}`);
     throw new Error(`无法连接 ComfyUI：${error.message}`);
   } finally { clearTimeout(timer); }
   if (!response.ok) throw new Error(`ComfyUI ${response.status}: ${(await response.text()).slice(0, 1000)}`);
@@ -214,6 +246,10 @@ async function comfyFetch(base, endpoint, options = {}) {
 async function runComfy(project, stage, prompt, shot = null, inputAsset = null) {
   const settings = normalizeSettings(await readJson(SETTINGS, {}));
   settings.comfyUrl = project.workflowSettings?.comfyUrl || settings.comfyUrl;
+  settings.comfyTimeoutMs = project.workflowSettings?.comfyTimeoutMs || settings.comfyTimeoutMs;
+  settings.videoWidth = project.workflowSettings?.videoWidth || settings.videoWidth;
+  settings.videoHeight = project.workflowSettings?.videoHeight || settings.videoHeight;
+  settings.videoDurationSec = project.workflowSettings?.videoDurationSec || settings.videoDurationSec;
   if (!/^https?:\/\//i.test(settings.comfyUrl || '')) throw new Error('ComfyUI 地址无效，请填写 http:// 或 https:// 地址。');
   const workflowName = project.workflowSettings?.bindings?.[stage] || settings.bindings?.[stage] || '';
   const selected = settings.workflows?.[workflowName];
@@ -226,24 +262,39 @@ async function runComfy(project, stage, prompt, shot = null, inputAsset = null) 
   if (inputAsset?.localPath && selected.mapping?.imageNode) comfyImageName = await uploadImageToComfy(settings, inputAsset.localPath);
   const generatedLatentId = `longv-${project.id}-${shot?.id || 0}-${Date.now()}`;
   const sequence = project.sequence || {};
+  const videoWidth = settings.videoWidth;
+  const videoHeight = settings.videoHeight;
+  const videoDurationSec = stage === 'video' ? settings.videoDurationSec : (shot?.duration || 5);
+  const videoFrames = framesForVideoDuration(videoDurationSec);
   const apiWorkflow = applyMapping(selected.workflow, selected.mapping || {}, {
-    prompt, negative: '', image: comfyImageName, width: 576, height: 1024,
-    frames: shot?.duration ? shot.duration * 24 + 1 : 121,
+    prompt, negative: '', image: comfyImageName, width: videoWidth, height: videoHeight,
+    frames: videoFrames,
     previous_latent_id: sequence.previousLatentId || '', current_latent_id: generatedLatentId,
     shot_index: shot?.id || 0, total_shots: project.plan?.shots?.length || 0,
     previous_frame: sequence.previousFrame || '', previous_video: sequence.previousVideo || ''
   });
+  if (stage === 'video') applyVideoSettings(apiWorkflow, videoWidth, videoHeight, videoFrames);
+  if (stage === 'environments') {
+    const environmentNegative = 'person, people, human, man, woman, child, face, body, portrait, character, crowd, figure, human silhouette';
+    for (const node of Object.values(apiWorkflow)) {
+      if (!node || typeof node !== 'object' || !node.inputs) continue;
+      const title = String(node._meta?.title || node.title || '').toLowerCase();
+      if (node.class_type === 'PrimitiveBoolean' && /enhance prompt/.test(title)) node.inputs.value = false;
+      if (node.class_type === 'TextEncodeQwenImage21') node.inputs.negative_prompt = environmentNegative;
+    }
+  }
   const clientId = id();
   activeComfy.set(project.id, { clientId, stage, shotId: shot?.id || null, promptId: '' });
-  const submit = await comfyFetch(settings.comfyUrl || 'http://127.0.0.1:8188', '/prompt', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt: apiWorkflow, client_id: clientId }) });
+  const submit = await comfyFetch(settings.comfyUrl || 'http://127.0.0.1:8188', '/prompt', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt: apiWorkflow, client_id: clientId }) }, settings.comfyTimeoutMs);
   let submitted;
   try { submitted = await submit.json(); } catch { throw new Error('ComfyUI 返回的不是有效 JSON，请检查 API 地址。'); }
   if (!submitted.prompt_id) throw new Error(JSON.stringify(submitted));
   activeComfy.get(project.id).promptId = submitted.prompt_id;
   logEvent(project.id, 'info', 'ComfyUI 已接受任务', { stage: stageNames[stage] || stage, workflow: workflowName, shot: shot?.id, promptId: submitted.prompt_id });
-  for (let i = 0; i < 240; i++) {
+  const executionTimeoutSeconds = Math.ceil(settings.comfyTimeoutMs / 1000);
+  for (let i = 0; i < executionTimeoutSeconds; i++) {
     await new Promise(r => setTimeout(r, 1000));
-    const history = await comfyFetch(settings.comfyUrl || 'http://127.0.0.1:8188', `/history/${submitted.prompt_id}`);
+    const history = await comfyFetch(settings.comfyUrl || 'http://127.0.0.1:8188', `/history/${submitted.prompt_id}`, {}, settings.comfyTimeoutMs);
     const historyJson = await history.json(); const item = historyJson[submitted.prompt_id];
     if (!item) continue;
     if (item.status?.status_str === 'error' || item.status?.status_str === 'failed') { const errorMessage = item.status.messages?.map(m => JSON.stringify(m)).join('\n') || 'ComfyUI 执行失败'; logEvent(project.id, 'error', 'ComfyUI 任务失败', { stage: stageNames[stage] || stage, shot: shot?.id, promptId: submitted.prompt_id, error: errorMessage }); throw new Error(errorMessage); }
@@ -254,7 +305,7 @@ async function runComfy(project, stage, prompt, shot = null, inputAsset = null) 
       const mediaValues = ['images', 'gifs', 'videos', 'audio'].flatMap(key => { const value = nodeOutput[key]; return Array.isArray(value) ? value : value ? [value] : []; });
       for (const file of mediaValues) {
         const url = `/view?filename=${encodeURIComponent(file.filename)}&subfolder=${encodeURIComponent(file.subfolder || '')}&type=${encodeURIComponent(file.type || 'output')}`;
-        const fileResponse = await comfyFetch(settings.comfyUrl || 'http://127.0.0.1:8188', url); const buffer = Buffer.from(await fileResponse.arrayBuffer());
+        const fileResponse = await comfyFetch(settings.comfyUrl || 'http://127.0.0.1:8188', url, {}, settings.comfyTimeoutMs); const buffer = Buffer.from(await fileResponse.arrayBuffer());
         const local = `${Date.now()}-${safeName(file.filename)}`; const localPath = path.join(outputDir, local); await fs.writeFile(localPath, buffer); files.push({ name: local, type: path.extname(local).slice(1).toLowerCase(), nodeId, outputKind: mappedKind, localPath, url: publicUrl(project.id, `${stage}/${local}`) });
       }
       for (const textValue of (nodeOutput.text || [])) {
@@ -269,7 +320,7 @@ async function runComfy(project, stage, prompt, shot = null, inputAsset = null) 
     const textFile = files.find(file => file.outputKind === 'text' || file.type === 'txt');
     return { promptId: submitted.prompt_id, files, runtime: { latentId, text: textFile?.text || '', lastFrame: imageFile?.localPath || '', video: videoFile?.localPath || '' } };
   }
-  throw new Error('ComfyUI 执行超时（超过4分钟）。');
+  throw new Error(`ComfyUI 执行超时（超过${executionTimeoutSeconds}秒）。`);
 }
 
 async function composeVideos(project) {
@@ -388,10 +439,10 @@ async function serveFile(res, file, contentType) { try { const data = await fs.r
 const runningJobs = new Map();
 async function handle(req, res) {
   const url = new URL(req.url, `http://${req.headers.host}`); const parts = url.pathname.split('/').filter(Boolean);
-  if (req.method === 'GET' && url.pathname === '/api/health') { const settings = normalizeSettings(await readJson(SETTINGS, {})); const project = url.searchParams.get('projectId') ? await getProject(url.searchParams.get('projectId')) : null; const comfyUrl = project?.workflowSettings?.comfyUrl || settings.comfyUrl; try { await comfyFetch(comfyUrl, '/system_stats'); return json(res, 200, { ok: true, comfy: 'online', comfyUrl, workflows: Object.keys(settings.workflows).length }); } catch (error) { return json(res, 503, { ok: false, comfy: 'offline', comfyUrl, error: error.message, workflows: Object.keys(settings.workflows).length }); } }
-  if (req.method === 'GET' && url.pathname === '/api/config') { const settings = normalizeSettings(await readJson(SETTINGS, {})); const project = url.searchParams.get('projectId') ? await getProject(url.searchParams.get('projectId')) : null; return json(res, 200, { comfyUrl: project?.workflowSettings?.comfyUrl || settings.comfyUrl, ffmpegPath: project?.workflowSettings?.ffmpegPath || settings.ffmpegPath || '', hasWorkflow: Object.keys(settings.workflows).length > 0, workflows: Object.values(settings.workflows).map(w => ({ name: w.name })), bindings: project?.workflowSettings?.bindings || settings.bindings, mapping: settings.mapping || {} }); }
-  if (req.method === 'POST' && url.pathname === '/api/test-comfy') { const settings = normalizeSettings(await readJson(SETTINGS, {})); const project = url.searchParams.get('projectId') ? await getProject(url.searchParams.get('projectId')) : null; const comfyUrl = project?.workflowSettings?.comfyUrl || settings.comfyUrl; try { await comfyFetch(comfyUrl, '/system_stats'); return json(res, 200, { ok: true, message: 'ComfyUI 连接正常', comfyUrl }); } catch (error) { return json(res, 503, { ok: false, error: error.message, comfyUrl }); } }
-  if (req.method === 'POST' && url.pathname === '/api/settings') { const input = await body(req); const settings = normalizeSettings(await readJson(SETTINGS, {})); if (input.projectId) { const project = await getProject(input.projectId); if (!project) return json(res, 404, { error: '项目不存在' }); project.workflowSettings = { comfyUrl: input.comfyUrl || '', ffmpegPath: input.ffmpegPath || '', bindings: input.bindings || {} }; await saveProject(project); return json(res, 200, { ok: true, projectId: project.id }); } await writeJson(SETTINGS, { ...settings, ...input, workflows: settings.workflows }); return json(res, 200, { ok: true }); }
+  if (req.method === 'GET' && url.pathname === '/api/health') { const settings = normalizeSettings(await readJson(SETTINGS, {})); const project = url.searchParams.get('projectId') ? await getProject(url.searchParams.get('projectId')) : null; const comfyUrl = project?.workflowSettings?.comfyUrl || settings.comfyUrl; const comfyTimeoutMs = project?.workflowSettings?.comfyTimeoutMs || settings.comfyTimeoutMs; try { await comfyFetch(comfyUrl, '/system_stats', {}, comfyTimeoutMs); return json(res, 200, { ok: true, comfy: 'online', comfyUrl, comfyTimeoutMs, workflows: Object.keys(settings.workflows).length }); } catch (error) { return json(res, 503, { ok: false, comfy: 'offline', comfyUrl, comfyTimeoutMs, error: error.message, workflows: Object.keys(settings.workflows).length }); } }
+  if (req.method === 'GET' && url.pathname === '/api/config') { const settings = normalizeSettings(await readJson(SETTINGS, {})); const project = url.searchParams.get('projectId') ? await getProject(url.searchParams.get('projectId')) : null; const bindings = { ...(settings.bindings || {}), ...(project?.workflowSettings?.bindings || {}) }; return json(res, 200, { comfyUrl: project?.workflowSettings?.comfyUrl || settings.comfyUrl, comfyTimeoutMs: project?.workflowSettings?.comfyTimeoutMs || settings.comfyTimeoutMs, videoWidth: project?.workflowSettings?.videoWidth || settings.videoWidth, videoHeight: project?.workflowSettings?.videoHeight || settings.videoHeight, videoDurationSec: project?.workflowSettings?.videoDurationSec || settings.videoDurationSec, ffmpegPath: project?.workflowSettings?.ffmpegPath || settings.ffmpegPath || '', hasWorkflow: Object.keys(settings.workflows).length > 0, workflows: Object.values(settings.workflows).map(w => ({ name: w.name })), bindings, mapping: settings.mapping || {} }); }
+  if (req.method === 'POST' && url.pathname === '/api/test-comfy') { const settings = normalizeSettings(await readJson(SETTINGS, {})); const project = url.searchParams.get('projectId') ? await getProject(url.searchParams.get('projectId')) : null; const comfyUrl = url.searchParams.get('url') || project?.workflowSettings?.comfyUrl || settings.comfyUrl; const comfyTimeoutMs = project?.workflowSettings?.comfyTimeoutMs || settings.comfyTimeoutMs; try { await comfyFetch(comfyUrl, '/system_stats', {}, comfyTimeoutMs); return json(res, 200, { ok: true, message: 'ComfyUI 连接正常', comfyUrl, comfyTimeoutMs }); } catch (error) { return json(res, 503, { ok: false, error: error.message, comfyUrl, comfyTimeoutMs }); } }
+  if (req.method === 'POST' && url.pathname === '/api/settings') { const input = await body(req); const settings = normalizeSettings(await readJson(SETTINGS, {})); const comfyTimeoutMs = Math.min(3600000, Math.max(1000, Number(input.comfyTimeoutMs) || settings.comfyTimeoutMs)); const videoWidth = Math.max(64, Math.round(Number(input.videoWidth) || settings.videoWidth)); const videoHeight = Math.max(64, Math.round(Number(input.videoHeight) || settings.videoHeight)); const videoDurationSec = Math.min(120, Math.max(1, Number(input.videoDurationSec) || settings.videoDurationSec)); if (input.projectId) { const project = await getProject(input.projectId); if (!project) return json(res, 404, { error: '项目不存在' }); project.workflowSettings = { comfyUrl: input.comfyUrl || '', comfyTimeoutMs, videoWidth, videoHeight, videoDurationSec, ffmpegPath: input.ffmpegPath || '', bindings: input.bindings || {} }; await saveProject(project); return json(res, 200, { ok: true, projectId: project.id, comfyTimeoutMs, videoWidth, videoHeight, videoDurationSec }); } await writeJson(SETTINGS, { ...settings, ...input, comfyTimeoutMs, videoWidth, videoHeight, videoDurationSec, workflows: settings.workflows }); return json(res, 200, { ok: true, comfyTimeoutMs, videoWidth, videoHeight, videoDurationSec }); }
   if (req.method === 'POST' && url.pathname === '/api/workflows') { const input = await body(req); const workflowError = validateWorkflow(input.workflow); if (workflowError) return json(res, 400, { error: workflowError }); const name = String(input.name || '').trim(); if (!name) return json(res, 400, { error: '请给工作流填写名称' }); if (input.stage && !ALL_STAGES.includes(input.stage)) return json(res, 400, { error: '工作流绑定阶段无效' }); const settings = normalizeSettings(await readJson(SETTINGS, {})); settings.workflows[name] = { name, workflow: input.workflow, mapping: input.mapping || {} }; if (input.stage) settings.bindings[input.stage] = name; if (input.projectId && input.stage) { const project = await getProject(input.projectId); if (project) { project.workflowSettings = project.workflowSettings || { comfyUrl: '', bindings: {} }; project.workflowSettings.bindings[input.stage] = name; await saveProject(project); } } await writeJson(SETTINGS, settings); return json(res, 200, { ok: true, name, bindings: settings.bindings }); }
   if (req.method === 'GET' && parts[0] === 'api' && parts[1] === 'workflows' && parts[2]) { const settings = normalizeSettings(await readJson(SETTINGS, {})); const name = decodeURIComponent(parts.slice(2).join('/')); const workflow = settings.workflows?.[name]; if (!workflow) return json(res, 404, { error: '工作流不存在' }); return json(res, 200, workflow); }
   if (req.method === 'DELETE' && parts[0] === 'api' && parts[1] === 'workflows' && parts[2]) { const settings = normalizeSettings(await readJson(SETTINGS, {})); const name = decodeURIComponent(parts.slice(2).join('/')); delete settings.workflows[name]; for (const [stage, bound] of Object.entries(settings.bindings)) if (bound === name) delete settings.bindings[stage]; await writeJson(SETTINGS, settings); return json(res, 200, { ok: true }); }
